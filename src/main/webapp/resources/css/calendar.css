@@ -1,0 +1,205 @@
+
+.xbasov00.calendar .leftCol {
+  margin-right: 160px;
+}
+
+.xbasov00.calendar .rightCol {
+  float: right;
+  width: 150px;
+}
+
+.xbasov00.calendar .body {
+  padding: 10px;
+  padding-bottom: 20px;
+  border: 1px solid #DEDFDF;
+  background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+}
+
+
+.xbasov00.calendar .monthCalendar {
+    table-layout:fixed;
+    color: gray;
+}
+
+.xbasov00.calendar .monthCalendar th, .monthCalendar td {
+    border: 1px dotted #BFBFBF;
+    text-align: center;
+}
+
+.xbasov00.calendar .monthCalendar th {
+    font-weight: bold;
+    font-size: 8pt;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.xbasov00.calendar .monthCalendar td.weekday {
+    text-align: center;
+    cursor: pointer;
+}
+
+.xbasov00.calendar .monthCalendar td.weekday .dateNumber {
+    font-size: 11pt;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+.xbasov00.calendar .monthCalendar td.weekday .eventsIndicator {
+    font-size: 8pt;
+    text-align: right;
+    padding-right: 2px;
+    min-height: 6px;
+}
+
+.xbasov00.calendar .monthCalendar td.weekday .eventsIndicator .minibox{
+    width: 4px;
+    height: 4px;
+    background-color: gray;
+    float: right;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
+
+
+.xbasov00.calendar .monthCalendar td.weekday a{
+    font-size: 10pt;
+    text-decoration: none;
+    color: #777777;
+}
+
+.xbasov00.calendar .monthCalendar td.weekday:hover {
+    background-color: #E6FFAE;
+}
+
+.xbasov00.calendar .monthCalendar td.today {
+    background-color: #FCFFC7;
+}
+
+.xbasov00.calendar .monthCalendar td.today a {
+    font-weight: bold;
+}
+
+.xbasov00.calendar .monthCalendar td.selected {
+    background-color: #BCFD5B;
+}
+
+.xbasov00.calendar .monthCalendar td.sunday a {
+    color: red;
+}
+
+.xbasov00.calendar .monthCalendar td.anotherMonthDay {
+    background-color: #D1D1D1;
+}
+
+.xbasov00.calendar .monthCalendar .head {
+    text-align: center;
+    font-size: 10pt;
+    height: 20px;
+}
+
+.xbasov00.calendar .monthCalendar .prevBtns {
+    float: left;
+    width: 70px;
+}
+
+.xbasov00.calendar .monthCalendar .nextBtns {
+    float: right;
+    width: 70px;
+}
+
+.xbasov00.calendar .monthCalendar .head {
+    margin-bottom: 4px;
+}
+
+.xbasov00.calendar .monthCalendarEvents .calComp {
+    border: 1px dotted #DEDFDF;
+    margin-top: 2px;
+    padding: 3px 5px;
+}
+
+.xbasov00.calendar .monthCalendarEvents .calComp:hover {
+    background-color: #E6FFAE;
+    cursor: pointer;
+}
+
+.xbasov00.calendar .monthCalendarEvents .todo {
+    background-color: #E6E6E6;        
+}
+
+.xbasov00.calendar .monthCalendarEvents .calComp .time {
+    font-size: 8pt;
+}
+
+.xbasov00.calendar .monthCalendarEvents .calComp .name {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.xbasov00.calendar .monthCalendarEvents .calComp .calendar {
+    font-size: 8pt;
+    color: #9B9B9B;
+}
+
+.xbasov00.calendar .monthCalendarEvents a {
+    text-decoration: none;
+}
+
+.xbasov00.calendar .calendarListItem {
+    padding: 2px;
+    margin-bottom: 2px;
+    border: 1px dotted #BFBFBF;
+    width: 140px;
+}
+
+.xbasov00.calendar .calendarListItem:hover {
+     background-color: #E6FFAE;
+}
+
+.xbasov00.calendar .calendarListItem a, .calendarListItem a:hover {
+    color: gray;
+}
+
+.xbasov00.calendar .calendarListItem:hover .menu {
+    visibility: visible;
+    cursor: pointer;
+}
+
+.xbasov00.calendar .calendarListItem .menu {
+    visibility: hidden;
+    border: 1px solid gray;
+    border-radius: 4px 4px 4px 4px;
+    width: 10px;
+    height: 10px;
+    margin-left: 2px;
+    background:url('#{resource['/images/down.gif']}') center center no-repeat;
+
+}
+
+.xbasov00.calendar .calendarListItem .checkbox {
+    border: 1px solid black;
+    border-radius: 4px 4px 4px 4px;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+}
+
+.xbasov00.calendar .calendarListItem .checkbox a {
+    text-decoration: none;
+}
+
+.xbasov00.calendar .calendarListItem .checkbox.selected{
+    border: 1px solid black;
+    background-color: gray;
+}
+
+.xbasov00.calendar .header {
+    background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+    padding: 5px 10px;
+}
+
+
+
+
+
+

@@ -1,0 +1,382 @@
+<ui:composition template="templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:pbr="http://jboss.org/portletbridge">
+
+    <ui:define name="body">
+    
+    
+        <div class="container header"> 
+            <h:form>
+
+                <!-- AJAX SPINNER FOR THIS VIEW -->
+                <div style="height:24px; float: right;">
+                        <a4j:status name="#{portletBean.portletWindowId}_calendarStatus">
+                            <f:facet name="start">
+                                <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                            </f:facet>
+                        </a4j:status>      
+                </div>
+            
+            
+            
+                <div style="float:right; padding: 3px;">
+                    <a4j:outputPanel id="popupMenu" styleClass="clickable">
+                        <h:graphicImage value="#{resource['/images/icn-menu.png']}" alt="ai" width="20px" height="16px" title="#{text.Menu}" />
+                    </a4j:outputPanel>
+                    
+                    <pbr:renderURL var="editModeURL" portletMode="edit">
+                    </pbr:renderURL>
+                    
+                    <pbr:renderURL var="helpModeURL" portletMode="help">
+                    </pbr:renderURL>
+                    
+                    <rich:contextMenu target="popupMenu" mode="ajax" showEvent="click" direction="bottomLeft">                                                      
+                        <rich:menuItem label="#{text.Settings}"                                      
+                            status="#{portletBean.portletWindowId}_calendarStatus"
+                            onclick="document.location.href='#{editModeURL}'"/>
+                        <rich:menuItem label="#{text.Help}"                                      
+                            status="#{portletBean.portletWindowId}_calendarStatus"
+                            onclick="document.location.href='#{helpModeURL}'"/>                         
+                                                 
+                    </rich:contextMenu>
+                </div>
+                
+                <div style="float:right; padding: 3px;">
+                    <a href="#" onClick="document.location.reload(true)" title="refresh page">
+                        <h:graphicImage value="#{resource['/images/refresh.png']}" alt="ai" width="15px" height="15px"/>
+                    </a>
+                </div>
+                
+                <a4j:outputPanel id="newEvent" layout="block" styleClass="section">
+                    <!-- New event button -->     
+                    <a4j:commandButton                            
+                        value="#{text.NewEvent}"
+                        title="#{text.NewEvent}"
+                        actionListener="#{popupManagerCalendarBean.setPopup('newEvent', text.NewEvent)}"
+                        render="dynamic-popup-content dynamic-popup-title"                                                                       
+                        rendered="#{calendarController.allCalendars.size() > 0}"
+                        status="#{portletBean.portletWindowId}_calendarStatus"
+                        oncomplete="#{rich:component('dynamic-popup')}.show();" 
+                        style="margin-top:5px">
+                        <a4j:actionListener listener="#{eventController.initEvent(monthCalendarBean.selectedDate)}" />
+                    </a4j:commandButton>
+                </a4j:outputPanel>
+                
+                
+            </h:form>           
+        </div>
+            
+        <div class="container body" >
+        
+            <div class="container">
+                <rich:messages globalOnly="true" />
+            </div>
+        
+            <div class="rightCol">
+            
+                <div style="height:24px; text-align: center;">
+                </div>
+             
+                <h:form id="form-selectedCalendars">
+              
+                    <a4j:outputPanel id="selectedCalendars" layout="block">
+    
+                        <ui:repeat var="cal" value="#{calendarController.allCalendars}">
+                            <div class="container calendarListItem">
+                                
+                                <a4j:outputPanel id="cal" styleClass="section menu" style="float:right;" layout="block" />
+                                <rich:contextMenu target="cal" mode="ajax" showEvent="click" direction="bottomLeft">
+                                    <rich:menuItem label="#{text.detail}"
+                                        actionListener="#{calendarController.setCalendar(cal)}"
+                                        action="#{popupManagerCalendarBean.setPopup('calendarDetail', text.CalendarDetail)}"                                            
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;"/>
+                                        
+                                        
+                                    <rich:menuItem label="#{text.Synchronize}"
+                                        actionListener="#{calendarController.setCalendar(cal)}"
+                                        action="#{calendarController.synchronyzeCalendar}"
+                                        rendered="#{calendarController.isCalendarRemote(cal)}"
+                                        render="calendarView"                         
+                                        status="#{portletBean.portletWindowId}_calendarStatus" 
+                                        oncomplete="facesMessagesHide()"/>
+                                    
+                                    <rich:menuItem label="#{text.edit}" 
+                                        actionListener="#{calendarController.setCalendar(cal)}"
+                                        action="#{popupManagerCalendarBean.setPopup('editCalendar', text.EditCalendar)}"
+                                        render="dynamic-popup-content dynamic-popup-title"                         
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;"/>
+                                    
+                                    
+                                    <rich:menuItem label="#{text.delete}" 
+                                        action="#{calendarController.deleteCalendar(cal)}"
+                                        render="newEvent selectedCalendars, calendarView"                         
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        onclick="if (!confirm('#{text.DeleteCalendarAlert}')) return false"/>
+                                </rich:contextMenu>
+                                
+                                <a4j:commandLink 
+                                    title="#{cal.name}"
+                                    action="#{monthCalendarBean.switchSelectedCalendar(cal)}"
+                                    render="calendarView selectedCalendars" 
+                                    status="#{portletBean.portletWindowId}_calendarStatus"
+                                    styleClass="section">
+                                    
+                                    <div class="section checkbox #{monthCalendarBean.selectedCalendars.contains(cal) ? 'selected' : ''}" />
+                                    <div class="section">
+                                        <h:outputText value="#{fn:length(cal.name) > 15 ? 
+                                            fn:substring(cal.name, 0, 15).concat('...') : cal.name}" /> 
+                                    </div>  
+                                
+                                </a4j:commandLink> 
+                                
+                                  
+                            </div>
+                        </ui:repeat>
+    
+                    </a4j:outputPanel>
+                    
+                                       
+                    <!-- New calendar button -->                   
+                    <a4j:commandButton value="#{text.NewCalendar}"
+                        title="#{text.NewCalendar}"
+                        action="#{popupManagerCalendarBean.setPopup('newCalendar', text.NewCalendar)}"
+                        render="dynamic-popup-content dynamic-popup-title"
+                        status="#{portletBean.portletWindowId}_calendarStatus"
+                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;" >
+                    </a4j:commandButton>
+                    <br />  
+                                 
+                </h:form>           
+                
+            </div>
+            
+            <div class="leftCol">
+                 <h:form id="form-calendarView">
+                     <a4j:outputPanel id="calendarView" layout="block">
+                         <div class="monthCalendar">
+                            <div class="head">
+                                <div class="nextBtns">
+                                    <a4j:commandButton 
+                                        value="&gt;" 
+                                        title="#{text.NextMonth}"
+                                        action="#{monthCalendarBean.nextMonth()}"                                  
+                                        render="@form" 
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        style="width: 25px;" />
+    
+                                    <a4j:commandButton 
+                                        value="&gt;&gt;"
+                                        title="#{text.NextYear}"
+                                        action="#{monthCalendarBean.nextYear()}"
+                                        render="@form" 
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        style="width: 25px;" />
+                                </div>
+                                <div class="prevBtns">
+                                    <a4j:commandButton 
+                                        value="&lt;&lt;"
+                                        title="#{text.PrevYear}" 
+                                        action="#{monthCalendarBean.prevYear()}"
+                                        render="@form" 
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        style="width: 25px;" />
+    
+                                    <a4j:commandButton 
+                                        value="&lt;" 
+                                        title="#{text.PrevMonth}"
+                                        action="#{monthCalendarBean.prevMonth()}"
+                                        render="@form"
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        style="width: 25px;" />
+                                </div>
+                                <strong>
+                                    <h:outputText value="#{monthCalendarBean.selectedDate}">
+                                        <f:convertDateTime pattern="MMMM yyyy" />
+                                    </h:outputText>
+                                </strong>
+                                <div class="cleaner" />
+                            </div>
+                            <table style="table-layout: fixed;">
+                                <tr>
+                                    <c:if test="#{monthCalendarBean.weekStartsOnSunday() == true}">
+                                        <th>#{text.Sun}</th>                                        
+                                    </c:if>                                             
+                                    <th>#{text.Mon}</th>
+                                    <th>#{text.Tue}</th>
+                                    <th>#{text.Wed}</th>
+                                    <th>#{text.Thu}</th>
+                                    <th>#{text.Fri}</th>
+                                    <th>#{text.Sat}</th>
+                                    <c:if test="#{monthCalendarBean.weekStartsOnSunday() == false}">
+                                        <th>#{text.Sun}</th>                                        
+                                    </c:if>                                                                                 
+                                                                                                           
+                                </tr>
+                                <c:forEach begin="0" end="#{monthCalendarBean.displayedWeeks - 1}" varStatus="w">              
+                                    <tr>
+                                        <c:forEach begin="0" end="#{monthCalendarBean.daysInWeek - 1}" var="cal" varStatus="d">
+                                            <c:set var="date" value="#{monthCalendarBean.daysFromMonthView.get(w.index*7+d.index)}"></c:set>
+                                            <td class="#{monthCalendarBean.getDayCellClass(date)}">
+                                                <a4j:commandLink 
+                                                    action="#{monthCalendarBean.setSelectedDate(date)}"
+                                                    render="@form"
+                                                    status="#{portletBean.portletWindowId}_calendarStatus"
+                                                    style="display:block;">
+                                                    <div class="dateNumber">
+                                                        <h:outputLabel value="#{date}">
+                                                            <f:convertDateTime pattern="dd" />
+                                                        </h:outputLabel>
+                                                    </div>
+                                                    <div class="eventsIndicator">
+                                                        <c:forEach begin="0" end="#{monthCalendarBean.getEventsFromSelectedCalendars(date).size() - 1}">
+                                                            <div class="minibox" />
+                                                        </c:forEach>
+                                                        <div class="cleaner" />
+                                                    </div>
+                                                </a4j:commandLink>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                               
+                                
+                            </table>
+                            <div class="foot">  
+                            </div>
+                        </div>
+                        
+                        <div class="monthCalendarEvents">
+                            <ui:repeat var="calComp" value="#{monthCalendarBean.getEventsFromSelectedCalendars(monthCalendarBean.selectedDate)}">
+                                                                                            
+                                <a4j:outputPanel layout="block" styleClass="calComp event" rendered="#{calCompController.isEvent(calComp)}">
+                                    <c:set var="event" value="#{calCompController.getEvent(calComp)}"></c:set>
+                                    <a4j:commandLink
+                                        title="#{event.name}"                                      
+                                        actionListener="#{eventController.setEvent(event)}"
+                                        action="#{popupManagerCalendarBean.setPopup('eventDetail', text.EventDetail)}"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show();" 
+                                        style="display:block;">
+    
+                                        <div class="container">
+                                            <div class="section calendar" style="float:right;">
+                                                <h:outputText value="(#{event.calendar.name})" />
+                                            </div>  
+                                            <div class="section time">                                      
+                                                <h:outputText value="#{monthCalendarBean.timeAtSelectedDate(event)}" />
+                                            </div>
+                                        </div>                                 
+                                        
+                                        <div class="name">
+                                            <h:outputText value="#{event.name}" />
+                                        </div>                                                                 
+                                      
+                                    </a4j:commandLink>
+                                </a4j:outputPanel>
+                                
+                                
+                                <a4j:outputPanel layout="block" styleClass="calComp todo" rendered="#{calCompController.isToDo(calComp)}">
+                                    <c:set var="todo" value="#{calCompController.getToDo(calComp)}"></c:set>
+                                    <a4j:commandLink
+                                        title="#{todo.name}"
+                                        actionListener="#{toDoController.setTodo(todo)}"                                    
+                                        action="#{popupManagerCalendarBean.setPopup('todoDetail', text.TodoDetail)}"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_calendarStatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show();" 
+                                        style="display:block;">
+    
+                                        <div class="container">
+                                            <div class="section calendar" style="float:right;">
+                                                <h:outputText value="(#{todo.calendar.name})" />
+                                            </div>
+                                            <div class="section time">                                      
+                                                <h:outputText value="#{monthCalendarBean.timeAtSelectedDate(todo)}" />
+                                            </div>
+                                        </div>                                 
+                                        
+                                        <div class="container">
+                                            <div class="section" style="float:right;">
+                                                <h:outputText value="#{text.Task}" />
+                                            </div> 
+                                            <div class="section name">
+                                                <h:outputText value="#{todo.name}" />
+                                            </div>
+                                        </div>                                                               
+                                      
+                                    </a4j:commandLink>
+                                </a4j:outputPanel>
+                                
+                                  
+                            </ui:repeat>
+                        </div>
+                    
+                    
+                    </a4j:outputPanel>   
+                </h:form>
+            </div>
+        
+        </div> 
+        
+        
+      
+        <!-- ### DYNAMIC POPUP ### -->
+                  
+        <rich:popupPanel id="dynamic-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 calendar">  
+                                          
+            <f:facet name="header">
+                <a4j:outputPanel id="dynamic-popup-title">
+                    <h:outputText value="#{not empty popupManagerCalendarBean.title ? popupManagerCalendarBean.title : text.EditEvent}" />
+                </a4j:outputPanel> 
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('dynamic-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <a4j:outputPanel id="dynamic-popup-content">
+                    <ui:include src="#{not empty popupManagerCalendarBean.view ? popupManagerCalendarBean.view : 'editEvent'}.xhtml" />  
+                </a4j:outputPanel> 
+            </h:form>                   
+        </rich:popupPanel> 
+        
+        <!-- 
+            Popup fot file upload
+            Workaround: Dynamic loading does not work - bug! 
+        -->
+        <rich:popupPanel id="upload-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 calendar">  
+                                          
+            <f:facet name="header">
+                <h:outputText value="#{text.FileUpload}" />
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('upload-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <ui:include src="newCalendar/uploadCal.xhtml" />  
+            </h:form>                   
+        </rich:popupPanel> 
+        
+        
+                  
+    </ui:define>
+</ui:composition>
+

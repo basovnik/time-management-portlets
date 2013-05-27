@@ -1,0 +1,319 @@
+.xbasov00 select, .xbasov00 input, .xbasov00 ul, .xbasov00 li, .xbasov00 textarea{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.xbasov00 .clickable {
+    cursor: pointer;
+}
+
+.xbasov00 .list li {
+    list-style-image: url(#{request.contextPath}/resources/images/list-item.gif);
+    margin-left: 15px;
+}
+
+.xbasov00 a {
+    text-decoration: underline;
+    color: gray;
+}
+
+.xbasov00 h1, .xbasov00 h2, .xbasov00 h3, .xbasov00 h4, .xbasov00 h5{
+    color: #777;
+}
+
+.xbasov00 h2 {
+    font-size: 10pt;
+}
+
+.xbasov00 a:hover {
+    color: green;
+}
+
+.xbasov00 .cleaner {
+    clear: both;
+}
+
+.xbasov00 label.required:before {
+   content: "* ";
+   font-weight: bold;
+   color: red;
+}
+
+.xbasov00 .requiredDesc:before {
+    content: "* ";
+    font-style: italic;    
+}
+
+.xbasov00 input[type="text"], .xbasov00 input[type="password"], .xbasov00 select, .xbasov00 textarea, .xbasov00 .rf-insp  {
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #D3CFC7;
+    padding: 5px;
+    background-image: url(#{request.contextPath}/resources/images/input-grad.png);
+    background-repeat: no-repeat;
+    background-position: 1px 1px;
+    background-color: #ffffff;
+}
+
+.xbasov00 input[type="checkbox"]{
+    position: relative;
+    top: 2px;
+}
+
+.xbasov00 .rf-insp {
+    display: block !important;
+    margin: 2px !important;;
+}
+
+.xbasov00 input.rf-insp-inp[type="text"] {
+    background-image:none !important;
+}
+
+.xbasov00 .detailTableRow > td > input[type="text"], .xbasov00 .detailTableRow > td > textarea {
+    width: 200px;
+}
+
+.xbasov00 input[type="submit"], .xbasov00 a.button {
+    border: 1px solid #BFBFBF;
+    padding: 1px 3px;
+    background: #EEEEEE;
+    border-radius: 4px 4px 4px 4px;
+    margin: 1px;
+    text-decoration:none;
+    font-size: 8pt;
+    color: black;
+}
+.xbasov00 input[type="submit"]:hover, .xbasov00 a.button:hover{
+    background: #D1D1D1;
+    cursor: pointer;
+}
+
+.xbasov00 tr.detailTableRow > td:first-child, .xbasov00 .section.label{
+    padding-right: 5px;
+    padding-bottom: 8px;
+    padding-top: 6px;
+    text-align: right;
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.xbasov00 tr.detailTableRow td {
+   padding-bottom: 5px;
+}
+
+.xbasov00 .section.value {
+    padding-left: 5px;
+    padding-bottom: 8px;
+    padding-top: 6px;
+    vertical-align: top;
+}
+
+.xbasov00 div.buttonField {
+  text-align: right;
+  margin-top: 5px;
+}
+
+
+
+
+/* TABLE - SIMPLE STYLE *****************/
+
+.xbasov00 .simpletablestyle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.xbasov00 .simpletablestyle img {
+    border: 0px;
+}
+
+.xbasov00 .simpletablestyle td {
+    padding-left: 6px;
+    font-size: 11px;
+    padding: 3px 10px 3px 10px;
+    border: 1px solid #C4C0B9;
+}
+
+.xbasov00 .simpletablestyle th {
+    background-color: #D1D1D1;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 2px 10px 2px 10px;
+    border: 1px solid #C4C0B9;
+}
+
+.xbasov00 .simpletablestyle thead {
+    background: url(#{request.contextPath}/resources/images/bkg-blkheader.png) black repeat-x top left;
+    height: 31px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.xbasov00 .simpletablestyle .header a {
+    color: #94aebd;
+}
+
+.xbasov00 .simpletablestype tfoot {
+    height: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #EAECEE;
+    text-align: center;
+}
+
+.xbasov00 .simpletablestyle tr.header td {
+    padding: 0px 10px 0px 5px;
+}
+
+.xbasov00 .simpletablestyle .subheader {
+    background-color: #e6e7e8;
+    font-size: 10px;
+    font-weight: bold;
+    color: #000000;
+    text-align: left;
+}
+
+/* Using new CSS3 selectors for styling*/
+.xbasov00 .simpletablestyle tr:nth-child(odd) {
+    background: #f4f3f3;
+}
+
+.xbasov00 .simpletablestyle tr:nth-child(even) {
+    background: #ffffff;
+}
+
+.xbasov00 .simpletablestyle td a:hover {
+    color: #3883ce;
+    text-decoration: none;
+}
+
+/* RICHFACES - EXTENSIONS *****************/
+
+/* rich:popupPanel */
+.xbasov00 .rf-pp-hdr {
+    padding-left: 5px;
+    padding-right: 20px;
+}
+.xbasov00 .rf-pp-shdw {
+    display: none;
+}
+
+/*.xbasov00 .rf-pp-cnt {
+    padding: 10px 20px 20px 20px !important;
+}*/
+
+/* rich:messages */
+.xbasov00 .rf-msg-err {
+    margin-left: 5px;
+    padding-top: 6px;
+}
+
+/* rich:fileUpload */
+.xbasov00 .rf-fu-lst {
+    height: 100px !important;
+}
+
+/* rich:calendar */
+.xbasov00 .rf-cal-hdr{
+    padding: 0px;
+}
+
+.xbasov00 .rf-cal-sp-up, .xbasov00 .rf-cal-sp-down {
+    height: 11px;
+}
+
+.xbasov00 .rf-cal-popup {
+    z-index: 10 !important;
+    width: 300px;
+}
+
+
+/* rich:contextMenu */
+.xbasov00 .rf-ctx-lst {
+    min-width: 0 !important;
+}
+
+.xbasov00 .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+    background: none !important;
+    border: none !important;
+    position: relative;
+    z-index: 5;
+}
+.xbasov00 .rf-tab-hdr-act.rf-tab-hdr-top {
+    background-image: none !important;
+    background-color: white;
+}
+
+.xbasov00 .rf-tab-hdr-inact.rf-tab-hdr-top {
+    background-image: none !important;
+    background-color: #D1D1D1;
+}
+
+.xbasov00 .rf-tab-hdr-brd {
+    border: none !important;
+    height: 0px !important;
+}
+
+.xbasov00 .rf-tab-hdr {
+    border-bottom: none !important;
+}
+
+.xbasov00 .rf-tab {
+    position: relative;
+    top: -1px;
+}
+
+.xbasov00 .rf-tab-cnt {
+    border-radius: 7px 7px 7px 7px;
+}
+
+/** autocomplete */
+.xbasov00 .rf-au-lst-dcrtn.disabled {
+    display: none;
+}
+
+
+.xbasov00 .rf-msgs *:last-child {
+    margin-bottom: 10px;
+}
+
+.xbasov00 input.rf-insp-inp[type="text"] {
+    background: none;
+}
+
+.xbasov00 .rf-cal-sp-btn, .xbasov00 .rf-cal-sp-btn td, .xbasov00 .rf-cal-sp-inp-ctnr, .xbasov00 .rf-cal-sp-inp-ctnr td  {
+    padding-bottom: 0px !important;
+}
+
+/* CONTAINERS *****************************/
+
+/* For modern browsers */
+.xbasov00 .container:before,
+.xbasov00 .container:after {
+    content:"";
+    display:table;
+}
+.xbasov00 .container:after {
+    clear:both;
+}
+/* For IE 6/7 (trigger hasLayout) */
+.xbasov00 .container {
+    zoom:1;
+}
+
+.xbasov00 .container .section {
+    float: left;
+    display: inline;
+}
+
+
+
+
+
+
+
+
+
+

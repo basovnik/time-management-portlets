@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+    version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd
+   http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+    <portlet>
+        <portlet-name>CalendarPortlet</portlet-name>
+        <display-name>CalendarPortlet</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-xhtml/calendar/home.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/portlet-xhtml/calendar/edit.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.help</name>
+            <value>/portlet-xhtml/calendar/help.xhtml</value>
+        </init-param>
+
+        <init-param>
+            <name>javax.portlet.faces.preserveActionParams</name>
+            <value>true</value>
+        </init-param>
+        
+        <expiration-cache>0</expiration-cache>
+    
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+            <portlet-mode>EDIT</portlet-mode>
+            <portlet-mode>HELP</portlet-mode>
+        </supports>
+
+        <supported-locale>en</supported-locale>
+        <supported-locale>cs</supported-locale>
+
+        <portlet-info>
+            <title>Calendar</title>
+        </portlet-info>
+        
+        
+    </portlet>
+
+    <portlet>
+        <portlet-name>ContactsPortlet</portlet-name>
+        <display-name>ContactsPortlet</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-xhtml/contacts/home.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/portlet-xhtml/contacts/edit.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.help</name>
+            <value>/portlet-xhtml/contacts/help.xhtml</value>
+        </init-param>
+
+        <init-param>
+            <name>javax.portlet.faces.preserveActionParams</name>
+            <value>true</value>
+        </init-param>
+
+        <expiration-cache>0</expiration-cache>
+
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+            <portlet-mode>EDIT</portlet-mode>
+            <portlet-mode>HELP</portlet-mode>
+        </supports>
+
+        <supported-locale>en</supported-locale>
+        <supported-locale>cs</supported-locale>
+
+        <portlet-info>
+            <title>Contacts</title>
+        </portlet-info>
+    </portlet>
+
+
+    <portlet>
+        <portlet-name>TasksPortlet</portlet-name>
+        <display-name>TasksPortlet</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-xhtml/tasks/today.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/portlet-xhtml/tasks/edit.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.help</name>
+            <value>/portlet-xhtml/tasks/help.xhtml</value>
+        </init-param>
+
+        <init-param>
+            <name>javax.portlet.faces.preserveActionParams</name>
+            <value>true</value>
+        </init-param>
+
+        <expiration-cache>0</expiration-cache>
+
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+            <portlet-mode>EDIT</portlet-mode>
+            <portlet-mode>HELP</portlet-mode>
+        </supports>
+
+        <supported-locale>en</supported-locale>
+        <supported-locale>cs</supported-locale>
+
+        <portlet-info>
+            <title>Tasks</title>
+        </portlet-info>
+    </portlet>
+
+
+    <filter>
+        <filter-name>PortletCDIFilter</filter-name>
+        <filter-class>org.gatein.cdi.PortletCDIFilter</filter-class>
+        <lifecycle>ACTION_PHASE</lifecycle>
+        <lifecycle>EVENT_PHASE</lifecycle>
+        <lifecycle>RENDER_PHASE</lifecycle>
+        <lifecycle>RESOURCE_PHASE</lifecycle>
+    </filter>
+
+    <filter>
+        <filter-name>UserLoggedFilter</filter-name>
+        <filter-class>dip.xbasov00.util.UserLoggedFilter</filter-class>
+        <lifecycle>RENDER_PHASE</lifecycle>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>PortletCDIFilter</filter-name>
+        <portlet-name>CalendarPortlet</portlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PortletCDIFilter</filter-name>
+        <portlet-name>ContactsPortlet</portlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PortletCDIFilter</filter-name>
+        <portlet-name>TasksPortlet</portlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>UserLoggedFilter</filter-name>
+        <portlet-name>CalendarPortlet</portlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>UserLoggedFilter</filter-name>
+        <portlet-name>ContactsPortlet</portlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>UserLoggedFilter</filter-name>
+        <portlet-name>TasksPortlet</portlet-name>
+    </filter-mapping>
+    
+    
+</portlet-app>
+
+

@@ -1,0 +1,94 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:pbr="http://jboss.org/portletbridge">
+   
+
+    <a4j:region>
+    
+        <div class="container">
+            
+            <!-- AJAX SPINNER FOR THIS REGION -->
+            <div style="float: right;">
+                <a4j:status>
+                    <f:facet name="start">
+                        <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                    </f:facet>
+                </a4j:status>
+            </div>
+            
+            <div class="section" style="max-width: 700px;">   
+                                    
+                <small>
+                    <h:outputText value="#{text.LocalCalendar}" rendered="#{not calendarController.isCurrentCalendarRemote()}" />
+                    <h:outputText value="#{text.RemoteICalendar}" rendered="#{calendarController.isCurrentCalendarRemote()}" />
+                    <h:outputText value=" (CalDAV)" rendered="#{not empty calendarController.calDavRemoteCalendar}" />
+                </small>
+                
+                
+                <h3><h:outputText value="#{calendarController.calendar.name}" /></h3>
+            
+            
+                <a4j:outputPanel rendered="#{not empty calendarController.calendar.description}"> 
+                    <p>#{calendarController.calendar.description}</p>
+                </a4j:outputPanel>
+                
+                
+                <a4j:outputPanel rendered="#{calendarController.isCurrentCalendarRemote()}">
+                    <strong>#{text.SourceURL}:</strong><br />
+                    <h:outputLink value="#{calendarController.remoteCalendar.url}">#{calendarController.remoteCalendar.url}</h:outputLink>
+                    <br /><br />
+                </a4j:outputPanel>
+                
+
+                <a4j:outputPanel rendered="#{not calendarController.isCurrentCalendarRemote()}">
+                    <strong>#{text.CalendarURL}:</strong><br />
+                    <a4j:outputPanel id="calendarShareUrl">
+                        <h:outputLink 
+                            value="#{request.contextPath}/rest/calendars/#{calendarController.calendar.privateId}" title="#{text.CalendarURL}">         
+                            #{calendarController.getCalendarShareURL(calendarController.calendar)}                 
+                        </h:outputLink>
+                    </a4j:outputPanel>
+                    <a4j:commandLink 
+                        title="#{text.Renew}" 
+                        action="#{calendarController.renewCalendarPrivateId()}"
+                        onclick="if (!confirm('#{text.RenewCalendarPrivateIdAlert}')) return false"
+                        execute="@this"
+                        render="calendarShareUrl">
+                        <h:graphicImage value="#{resource['/images/refresh.png']}" alt="#{text.Renew}" width="16px" height="16px"/>
+                    </a4j:commandLink><br />
+                    <small style="color:red; ">* #{text.LocalCalendarURLPrivacyWarning}</small>
+                </a4j:outputPanel>
+
+                <hr />              
+                
+                <a4j:commandButton
+                    value="#{text.edit}"
+                    title="#{text.EditCalendar}"
+                    action="#{popupManagerCalendarBean.setPopup('editCalendar', text.EditCalendar)}"
+                    render="dynamic-popup-content dynamic-popup-title"                 
+                    oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show(); return false;" />
+            
+                <a4j:commandButton
+                    action="#{calendarController.deleteCalendar(calendarController.calendar)}"
+                    value="#{text.delete}" 
+                    render="newEvent calendarView selectedCalendars" 
+                    onclick="if (!confirm('#{text.DeleteCalendarAlert}')) return false"
+                    oncomplete="#{rich:component('dynamic-popup')}.hide(); return false;"/>
+                
+                <a4j:commandButton
+                    action="#{calendarController.synchronyzeCalendar}"
+                    value="#{text.Synchronize}" 
+                    rendered="#{calendarController.isCurrentCalendarRemote()}"
+                    render="calendarView" 
+                    oncomplete="facesMessagesHide()" />
+            </div>    
+        </div>
+            
+
+    </a4j:region>
+
+</ui:composition>

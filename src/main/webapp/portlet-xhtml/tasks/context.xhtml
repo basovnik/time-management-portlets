@@ -1,0 +1,51 @@
+<ui:composition template="templates/view.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:pbr="http://jboss.org/portletbridge"
+    xmlns:tasks="http://java.sun.com/jsf/composite/tasks">
+
+
+    <ui:define name="menu">
+        <tasks:mainmenu selectedItem="" />
+    </ui:define>
+    
+    <ui:define name="tasks">  
+         
+        <div style="float: right;" class="gtd-icon context"></div> 
+                
+        <a4j:region>
+            <a4j:outputPanel id="tasksView" layout="block">
+                
+                <h2>@#{contextController.context.name}</h2> 
+            
+                <div class="taskList">
+                    <ui:repeat var="task" value="#{contextController.context.tasks}">
+                        <a4j:commandLink
+                            title="#{task.name}"
+                            actionListener="#{taskController.setTask(task)}"
+                            action="#{popupManagerTasksBean.setPopup('../taskDetail', text.TaskDetail)}"
+                            render="dynamic-popup-content dynamic-popup-title"
+                            status="#{portletBean.portletWindowId}_tasksSatus"
+                            rendered="#{not task.completed}"
+                            oncomplete="#{rich:component('dynamic-popup')}.show();">
+                            <div class="container task">
+                                <h:outputText value="#{task.name}" styleClass="name"/>        
+                            </div>
+                        </a4j:commandLink>
+                    
+                    </ui:repeat>
+                </div>
+            </a4j:outputPanel>
+        </a4j:region>  
+        
+            
+    </ui:define>
+     
+</ui:composition>
+

@@ -1,0 +1,76 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    <h:head>
+        <h:outputStylesheet library="css" name="application.css" />
+        <h:outputStylesheet library="css" name="tasks.css" />
+        
+        <h:outputScript library="js" name="application.js" />
+        <h:outputScript library="js" name="tasks.js" />
+    </h:head>
+    
+    <h:body>
+    
+        <div id="page" class="xbasov00 tasks">
+            <div id="page-content">
+                <div class="content-container">
+                    <ui:insert name="body">
+                            Menu content missed
+                    </ui:insert>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        
+        
+        <!-- ### DYNAMIC POPUP ### -->
+                  
+        <rich:popupPanel id="dynamic-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 tasks">  
+                                          
+            <f:facet name="header">
+                <a4j:outputPanel id="dynamic-popup-title">
+                    <h:outputText value="#{not empty popupManagerTasksBean.title ? popupManagerTasksBean.title : text.NewTask}" />
+                </a4j:outputPanel> 
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('dynamic-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <a4j:outputPanel id="dynamic-popup-content">
+                    <ui:include src="#{not empty popupManagerTasksBean.view ? popupManagerTasksBean.view : '../newTask'}.xhtml" />
+                </a4j:outputPanel> 
+            </h:form>                   
+        </rich:popupPanel> 
+        
+        
+        <!-- 
+            Popup fot file upload
+            Workaround: Dynamic loading does not work - bug! 
+        -->
+        <rich:popupPanel id="upload-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 tasks">  
+                                          
+            <f:facet name="header">
+                <h:outputText value="#{text.FileUpload}" />
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('upload-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <ui:include src="../importTasks.xhtml" />  
+            </h:form>                   
+        </rich:popupPanel>  
+              
+    </h:body>
+</f:view>

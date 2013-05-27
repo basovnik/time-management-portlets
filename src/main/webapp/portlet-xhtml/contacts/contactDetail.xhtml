@@ -1,0 +1,221 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:rich="http://richfaces.org/rich">
+    
+     
+     
+     <a4j:region>
+     
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right;">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+    
+        <h3>
+            <strong>
+                <h:outputText value="#{contactController.contact.usedName}" />      
+            </strong>
+        </h3>
+        
+        <div class="container">
+            <div class="section" style="min-width: 200px;">
+            
+                <br />
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.nickName}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.Nickname}:" />
+                    </div>
+                    <div class="section value">
+                        <h:outputText value="#{contactController.contact.nickName}" />
+                    </div>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.addresses}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.Addresses}:" />
+                    </div>
+                    <div class="section value">
+                        <ui:repeat var="addr" value="#{contactController.contact.addressesAsList}" varStatus="loop">
+                            <div style="margin-bottom: 3px;">
+                                <b><h:outputText value="#{addr.title}" /></b><br />
+                                
+                                <h:outputLink value="https://maps.google.com/?q=#{addr.niceAddress}" title="#{addr.niceAddress}" target="_blank">
+                                    <h:outputText value="#{addr.niceAddress}" />
+                                </h:outputLink>
+                            </div>                   
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.telephoneNumbers}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.TelephoneNumbers}:" />
+                    </div>
+                    <div class="section value">
+                        <ui:repeat var="tn" value="#{contactController.contact.telephoneNumbersAsList}">
+                            <div style="margin-bottom: 3px;">
+                                <b><h:outputText value="#{tn.name}" /></b><br />
+                                <h:outputText value="#{tn.telephoneNumber}" />
+                            </div>                        
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.emails}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.Emails}:" />
+                    </div>
+                    <div class="section value">
+                        <ui:repeat var="email" value="#{contactController.contact.emailsAsList}">
+                            <div style="margin-bottom: 3px;">
+                                <b><h:outputText value="#{email.name}" /></b><br />
+                                <h:outputLink value="mailto:#{email.email}" title="#{email.email}">
+                                    <h:outputText value="#{email.email}" />
+                                </h:outputLink>
+                            </div>                        
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.urls}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.URLs}:" />
+                    </div>
+                    <div class="section value" style="max-width: 250px;">
+                        <ui:repeat var="url" value="#{contactController.contact.urlsAsList}">
+                            <div style="margin-bottom: 3px;">
+                                <b><h:outputText value="#{url.name}" /></b><br />
+                                <h:outputLink value="#{url.url}" title="#{url.url}" target="_blank">
+                                    <h:outputText value="#{url.url}" />
+                                </h:outputLink>
+                            </div>                        
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                 <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.birthday}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="birthday" value="#{text.Birthday}:" />
+                    </div>
+                    <div class="section value">
+                        <h:outputText id="birthday" value="#{contactController.contact.birthday}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="CET"/>
+                        </h:outputText>
+                        
+                    </div>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.anniversary}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="anniversary" value="#{text.Anniversary}:" />
+                    </div>
+                    <div class="section value">
+                        <h:outputText id="anniversary" value="#{contactController.contact.anniversary}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="CET"/>
+                        </h:outputText>
+                    </div>
+                </a4j:outputPanel>  
+                
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.note}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="note" value="#{text.Description}:" />
+                    </div>
+                    <div class="section value" style="max-width: 300px; ">
+                        <h:outputText id="note" value="#{contactController.contact.note}" />
+                    </div>
+                </a4j:outputPanel>
+                              
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.langs}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.Languages}:" />
+                    </div>
+                    <div class="section value">
+                        <ui:repeat var="lang" value="#{contactController.contact.langsAsList}" varStatus="loop">
+                            <h:outputText value="#{lang.name}#{!loop.last ? ', ' : ''}" />                   
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" rendered="#{not empty contactController.contact.contactGroups}" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="#{text.Groups}:" />
+                    </div>
+                    <div class="section value">
+                        <ui:repeat var="group" value="#{contactController.contact.contactGroupsAsList}" varStatus="loop">
+                            <h:outputText value="#{group.name}#{!loop.last ? ', ' : ''}" />                   
+                        </ui:repeat>
+                    </div>
+                </a4j:outputPanel>
+                
+                
+                <div class="container" >
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel value="REST #{text.URL}:" />
+                    </div>
+                    <div class="section value" style="max-width: 250px;">
+                        
+                        <h:outputLink id="contactShareURL"
+                            value="#{request.contextPath}/rest/contacts/vcard/#{contactController.contact.privateId}" title="#{text.ContactURL}">         
+                            #{contactController.getContactShareURL(contactController.contact)}                 
+                        </h:outputLink>
+                        
+                        <a4j:commandLink 
+                            title="#{text.Renew}" 
+                            action="#{contactController.renewContactPrivateId()}"
+                            onclick="if (!confirm('#{text.RenewContactPrivateIdAlert}')) return false"
+                            execute="@this"
+                            render="contactShareURL exportButton">
+                            <h:graphicImage value="#{resource['/images/refresh.png']}" alt="#{text.Renew}" width="16px" height="16px"/>
+                        </a4j:commandLink><br />
+                                              
+                    </div>
+                </div>  
+                
+            </div>
+            <div class="section" style="padding-left: 30px;">
+                <h:graphicImage value="#{resource['/images/avatar-male.png']}" alt="male" width="100px" height="100px" rendered="#{contactController.contact.male}" style="float:right;"/>
+                <h:graphicImage value="#{resource['/images/avatar-female.png']}" alt="female" width="100px" height="100px" rendered="#{not contactController.contact.male}" style="float:right;"/>  
+            </div>
+        </div>
+        
+        
+        <hr />
+        
+        <a4j:commandButton
+            value="#{text.edit}"
+            title="#{text.EditContact}"
+            action="#{popupManagerContactsBean.setPopup('editContact', text.EditContact)}"
+            render="dynamic-popup-content dynamic-popup-title"                
+            oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show(); return false;" />
+            
+        <a4j:commandButton
+            value="#{text.delete}"
+            title="#{text.DeleteContact}"
+            action="#{contactController.deleteContact(contactController.contact)}"
+            render="contactsView"                       
+            onclick="if (confirm('#{text.DeleteContactAlert}')) #{rich:component('dynamic-popup')}.hide(); else return false;" />
+            
+            
+        <h:outputLink id="exportButton"
+            value="#{request.contextPath}/rest/contacts/vcard/#{contactController.contact.privateId}" 
+            title="#{text.ContactURL}"
+            class="button">         
+            #{text.ExportVCard}                 
+        </h:outputLink>
+                      
+         
+    </a4j:region>
+        
+</ui:composition>

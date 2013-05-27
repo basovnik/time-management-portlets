@@ -1,0 +1,38 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+    
+    
+    <a4j:region>
+    
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right;">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+        
+        <h3>#{text.NewGroup}</h3> 
+             
+        <br />
+        <ui:include src="groupForm.xhtml" />
+        
+        <div class="buttonField">   
+            <a4j:commandButton title="#{text.Save}" value="#{text.Save}"
+                actionListener="#{contactGroupController.createContactGroup}" 
+                action="#{popupManagerContactsBean.setPopup('groupDetail', text.ContactGroupDetail)}"
+                render="contactsView groupsView dynamic-popup-content dynamic-popup-title"
+                oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show();return false;" />
+        </div> 
+        
+    </a4j:region>
+
+</ui:composition>

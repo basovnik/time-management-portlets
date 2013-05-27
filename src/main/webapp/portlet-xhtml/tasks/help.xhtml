@@ -1,0 +1,35 @@
+<ui:composition template="templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:pbr="http://jboss.org/portletbridge">
+
+    <ui:define name="body">
+        
+        <div class="container header" style="padding: 10px;">
+            <pbr:renderURL var="viewModeURL" portletMode="view">
+            </pbr:renderURL>
+            <h:outputLink value="#{viewModeURL}" class="button">#{text.Back}</h:outputLink>
+        </div>
+        
+        <div class="container body" style="padding-bottom: 50px;">
+            <span>Portlet ID: #{portletBean.portletWindowId}</span><br />
+            
+            <h2>#{text.Help}</h2>
+            
+            <ul class="list">
+                <li>
+                    <a href="#{request.contextPath}/user-manual.pdf" title="#{text.UserDocumentation}">#{text.UserDocumentation}</a>
+                </li>
+            </ul>
+            
+        </div>
+        
+        
+        
+    </ui:define>
+</ui:composition>

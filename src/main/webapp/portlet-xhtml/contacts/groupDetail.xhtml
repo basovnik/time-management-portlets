@@ -1,0 +1,91 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:rich="http://richfaces.org/rich">
+    
+     
+     
+     <a4j:region>
+     
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right;">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+    
+        <h3><h:outputText value="#{contactGroupController.contactGroup.name}" /></h3>
+        
+        
+        <div class="container" >
+            <div class="section label" style="width: 150px;">
+                <h:outputLabel value="REST vCard #{text.URL}:" />
+            </div>
+            <div class="section value" style="max-width: 250px;">
+                
+                <h:outputLink id="contactGroupShareVCardURL"
+                    value="#{request.contextPath}/rest/contacts/vcard-group/#{contactGroupController.contactGroup.privateId}" title="#{text.ContactURL}">         
+                    #{contactGroupController.getContactGroupShareVCardURL(contactGroupController.contactGroup)}                 
+                </h:outputLink>
+                                     
+            </div>
+        </div>
+        
+        <div class="container" >
+            <div class="section label" style="width: 150px;">
+                <h:outputLabel value="REST iCalendar #{text.URL}:" />
+            </div>
+            <div class="section value" style="max-width: 250px;">
+                
+                <h:outputLink id="contactGroupShareICalURL"
+                    value="#{request.contextPath}/rest/contacts/ical-group/#{contactGroupController.contactGroup.privateId}" title="#{text.ContactURL}">         
+                    #{contactGroupController.getContactGroupShareICalURL(contactGroupController.contactGroup)}                 
+                </h:outputLink>               
+                                      
+            </div>
+        </div>
+        
+        <h:graphicImage value="#{resource['/images/refresh.png']}" alt="#{text.Renew}" width="16px" height="16px"/>
+           
+        <a4j:commandLink 
+            title="#{text.Renew}"
+            value="#{text.GenerateURLs}"
+            action="#{contactGroupController.renewContactGroupPrivateId()}"
+            onclick="if (!confirm('#{text.RenewContactGroupPrivateIdAlert}')) return false"
+            execute="@this"
+            render="contactGroupShareVCardURL exportGroupVCardButton contactGroupShareICalURL">
+        </a4j:commandLink><br />
+        
+        <hr />
+        
+        <a4j:commandButton value="#{text.edit}"
+            title="#{text.edit}"
+            actionListener="#{contactGroupController.setContactGroup(contactGroupController.contactGroup)}"
+            action="#{popupManagerContactsBean.setPopup('editGroup', text.EditGroup)}"
+            render="groupsView contactsView dynamic-popup-content dynamic-popup-title"
+            oncomplete="#{rich:component('dynamic-popup')}.hide();#{rich:component('dynamic-popup')}.show(); return false;"
+            execute="@this" />
+            
+        <a4j:commandButton value="#{text.delete}"
+            title="#{text.delete}"
+            actionListener="#{contactGroupController.setContactGroup(contactGroupController.contactGroup)}"
+            action="#{contactGroupController.deleteContactGroup()}"
+            render="groupsView contactsView"
+            execute="@this" 
+            onclick="if (confirm('#{text.DeleteContactGroupAlert}')) #{rich:component('dynamic-popup')}.hide(); else return false;" />
+            
+        <h:outputLink id="exportGroupButton"
+            value="#{request.contextPath}/rest/contacts/vcard-group/#{contactGroupController.contactGroup.privateId}" 
+            title="#{text.ExportVCard}"
+            class="button">         
+            #{text.ExportVCard}                 
+        </h:outputLink>
+        
+    </a4j:region>
+        
+</ui:composition>

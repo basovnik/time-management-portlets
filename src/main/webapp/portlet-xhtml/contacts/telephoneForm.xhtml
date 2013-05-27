@@ -1,0 +1,66 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    
+  
+    <a4j:outputPanel id="telephoneTable">
+
+        <h:dataTable 
+            value="#{contactController.contact.telephoneNumbersAsList}"
+            var="telephoneItem" 
+            rendered="#{not empty contactController.contact.telephoneNumbersAsList}"
+            styleClass="simpletablestyle">
+            <h:column>
+                <f:facet name="header">#{text.Title}</f:facet>
+                <h:outputText value="#{telephoneItem.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{text.TelephoneNumber}</f:facet>
+                <h:outputText value="#{telephoneItem.telephoneNumber}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"></f:facet>
+                <a4j:commandLink 
+                    title="#{text.delete}"
+                    value="#{text.delete}"
+                    action="#{contactController.deleteTelephoneNumberTmp(telephoneItem)}"
+                    execute="@this"
+                    render="telephoneTable" 
+                    status="xxx"/>
+            </h:column>
+        </h:dataTable>
+    </a4j:outputPanel>
+    
+    <a4j:outputPanel id="telephoneForm">
+        <h:panelGrid columns="3" rowClasses="detailTableRow">
+        
+            <h:outputLabel for="telephoneNumberName" value="#{text.Title}:" styleClass="required" />
+            <h:inputText id="telephoneNumberName" value="#{contactController.telephoneNumber.name}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.Title}!" />
+            <rich:message for="telephoneNumberName" />
+            
+            <h:outputLabel for="telephoneNumberValue" value="#{text.TelephoneNumber}:" styleClass="required" />
+            <h:inputText id="telephoneNumberValue" value="#{contactController.telephoneNumber.telephoneNumber}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.TelephoneNumber}!" />
+            <rich:message for="telephoneNumberValue" />
+             
+        </h:panelGrid>
+        
+   </a4j:outputPanel>
+   
+   
+    <a4j:commandButton 
+        title="#{text.Add}" 
+        value="#{text.Add}"
+        action="#{contactController.addTelephoneNumberTmp()}" 
+        render="telephoneTable telephoneForm"
+        />
+    
+
+</ui:composition>
+

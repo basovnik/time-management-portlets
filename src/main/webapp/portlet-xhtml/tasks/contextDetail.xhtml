@@ -1,0 +1,43 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:rich="http://richfaces.org/rich">
+    
+     
+     
+     <a4j:region>
+     
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right;">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+    
+        <h3 style="margin-bottom: 3px; min-width: 200px;"><h:outputText value="#{contextController.context.name}" /></h3>
+        
+        <hr />
+        
+        <a4j:commandButton value="#{text.edit}"
+            title="#{text.edit}"
+            action="#{popupManagerTasksBean.setPopup('../editContext', text.EditContext)}"
+            render="dynamic-popup-content dynamic-popup-title"
+            oncomplete="#{rich:component('dynamic-popup')}.hide();#{rich:component('dynamic-popup')}.show(); return false;"
+            execute="@this" />
+            
+        <a4j:commandButton value="#{text.delete}"
+            title="#{text.delete}"
+            action="#{contextController.deleteContext()}"
+            render="contexts"
+            execute="@this" 
+            onclick="if (confirm('#{text.DeleteContextAlert}')) #{rich:component('dynamic-popup')}.hide(); else return false;" />
+           
+        
+    </a4j:region>
+        
+</ui:composition>

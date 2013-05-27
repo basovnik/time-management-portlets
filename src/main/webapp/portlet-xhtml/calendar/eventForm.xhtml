@@ -1,0 +1,223 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    
+      
+    <h:panelGrid columns="3" id="eventFormPanel" rowClasses="detailTableRow">
+
+        <h:outputLabel for="name" value="#{text.Title}:" styleClass="required" />
+        <h:inputText label="Name" id="name" 
+            required="true" requiredMessage="#{text.PleaseEnter} #{text.Title}!"
+            value="#{eventController.event.name}">
+            <f:validateLength minimum="1" maximum="30" />
+        </h:inputText>
+        <rich:message for="name" />
+
+
+        <h:outputLabel for="description" value="#{text.Description}:" />
+        <h:inputTextarea label="Description" id="description" rows="4"
+            value="#{eventController.event.description}">
+            <f:validateLength maximum="1000" />
+        </h:inputTextarea>
+        <rich:message for="description" />
+        
+        
+        <h:outputLabel for="location" value="#{text.Location}:" />
+        <h:inputText label="Location" id="location"
+            value="#{eventController.event.location}">
+        </h:inputText>
+        <rich:message for="location"  />
+
+        
+        <h:outputLabel for="datetimeFrom" value="#{text.DatetimeFrom}:" />
+        <rich:calendar value="#{eventController.event.datetimeFrom}" id="datetimeFrom"
+            popup="true" datePattern="#{eventController.datetimeFormat}"
+            showApplyButton="true" cellWidth="24px" cellHeight="22px" style="position:absolute;"
+            required="true" requiredMessage="#{text.PleaseEnter} '#{text.DatetimeFrom}'!" >
+        </rich:calendar>
+        <rich:message for="datetimeFrom" />
+        
+        
+        <!-- register a PostValidateEvent -->
+        <f:event listener="#{eventController.validateDatetimeTo}" type="postValidate" />
+        
+        <h:outputLabel for="datetimeTo" value="#{text.DatetimeTo}:" />
+        <rich:calendar value="#{eventController.event.datetimeTo}" id="datetimeTo"
+            popup="true" datePattern="#{eventController.datetimeFormat}"
+            showApplyButton="true" cellWidth="24px" cellHeight="22px" style="position:absolute;"
+            required="true" requiredMessage="#{text.PleaseEnter} '#{text.DatetimeTo}'!">
+        </rich:calendar>
+        <rich:message for="datetimeTo" />
+        
+        
+        <h:outputLabel for="allDayEvent" value="#{text.AllDayEvent}:" />
+        <h:selectBooleanCheckbox value="#{eventController.event.allDayEvent}" id="allDayEvent">
+            <a4j:ajax 
+                event="change" 
+                execute="datetimeFrom datetimeTo allDayEvent" 
+                render="datetimeFrom, datetimeTo"/>
+        </h:selectBooleanCheckbox>
+        <rich:message for="allDayEvent" />
+        
+        
+        <h:outputLabel for="calendarSelect" value="#{text.Calendar}:" />
+        <h:selectOneMenu value="#{eventController.event.calendar}" id="calendarSelect" converter="calendarConverter">
+            <f:selectItems value="#{calendarController.editableCalendars}" var="calendarItem" 
+                itemValue="#{calendarItem}" itemLabel="#{calendarItem.name}" /> 
+        </h:selectOneMenu>
+        <rich:message for="calendarSelect" /> 
+        
+    </h:panelGrid>
+    
+    <br />
+    
+    <rich:collapsiblePanel header="#{text.Repeat}" expanded="false" switchType="client" >
+        
+        <div class="container" style="margin-bottom: 1px;">
+            <div class="section label" style="width:100px; ">
+                <h:outputLabel for="calendarRepeatType" value="#{text.Repeat}:" />
+            </div>
+            <div class="section">
+            
+                <!-- FREQUENCY -->
+                <h:selectOneMenu 
+                    value="#{eventController.frequency}" 
+                    id="calendarRepeatType"
+                    style="width:150px; ">
+                    <f:selectItems value="#{eventController.getRecurenceFrequencies()}" />
+                    <a4j:ajax 
+                        event="change" 
+                        execute="@this"
+                        render="recurDefineBlock"/>
+                </h:selectOneMenu> 
+            </div>
+        </div>
+        
+        <a4j:outputPanel id="recurDefineBlock" >
+            <a4j:outputPanel layout="block" rendered="#{not empty eventController.recurRule}">            
+                
+                <a4j:outputPanel layout="block" rendered="#{eventController.frequency.equals('WEEKLY')}" style="margin-bottom: 1px;">
+                    <h:selectManyCheckbox value="#{eventController.recurRule.dayList}">
+                        <f:selectItem itemValue="SU" itemLabel="#{text.Sun}"/>
+                        <f:selectItem itemValue="MO" itemLabel="#{text.Mon}"/> 
+                        <f:selectItem itemValue="TU" itemLabel="#{text.Tue}"/> 
+                        <f:selectItem itemValue="WE" itemLabel="#{text.Wed}"/> 
+                        <f:selectItem itemValue="TH" itemLabel="#{text.Thu}"/> 
+                        <f:selectItem itemValue="FR" itemLabel="#{text.Fri}"/> 
+                        <f:selectItem itemValue="SA" itemLabel="#{text.Sat}"/>    
+                    </h:selectManyCheckbox>
+                </a4j:outputPanel>
+                
+                <a4j:outputPanel styleClass="container" layout="block" rendered="#{eventController.frequency.equals('MONTHLY')}" style="margin-bottom: 1px;">
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="monthlyRepeatType" value="#{text.RepeatTo}:" />
+                    </div>
+                    <div class="section">
+                        <!-- MONTHLY RECURRENCES -->
+                        <h:selectOneRadio id="monthlyRepeatType" value="#{eventController.monthlyRepeatType}">
+                            <f:selectItem itemValue="DAY_OF_MONTH" itemLabel="#{text.DayOfMonth}"/>
+                            <f:selectItem itemValue="DAY_OF_WEEK" itemLabel="#{text.DayOfWeek}"/>
+                        </h:selectOneRadio>
+                    </div>
+                </a4j:outputPanel>
+                
+                
+                <div class="container" style="margin-bottom: 1px;">
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="recurInterval" value="#{text.Interval}:" />
+                    </div>
+                    <div class="section">
+                    
+                        <!-- PREDEFINED INTERVALS -->
+                        <h:selectOneMenu 
+                            value="#{eventController.recurInterval}" 
+                            id="recurInterval"
+                            style="width:150px; ">
+                            <f:selectItem itemValue="INTERVAL_1ST"  itemLabel="#{text.Every1stOccurrence}" />
+                            <f:selectItem itemValue="INTERVAL_2ND"  itemLabel="#{text.Every2ndOccurrence}" />
+                            <f:selectItem itemValue="INTERVAL_3RD"  itemLabel="#{text.Every3rdOccurrence}" />
+                            <f:selectItem itemValue="INTERVAL_4TH"  itemLabel="#{text.Every4thOccurrence}" />
+                            <f:selectItem itemValue="CUSTOM"  itemLabel="#{text.Custom}" />
+                            <a4j:ajax 
+                                event="change" 
+                                execute="@this"
+                                render="recurIntervalSpinner"/>
+                        </h:selectOneMenu>
+                    </div>
+                    
+                    <!-- CUSTOM INTERVAL -->
+                    <a4j:outputPanel id="recurIntervalSpinner" styleClass="section">
+                        <rich:inputNumberSpinner rendered="#{eventController.recurInterval.equals('CUSTOM')}" value="#{eventController.recurRule.interval}" step="1" minValue="1" maxValue="365"/>
+                    </a4j:outputPanel>
+                </div>
+                
+                <div class="container" style="margin-bottom: 1px;">
+                    <div class="section label" style="width:100px; ">
+                        <h:outputLabel for="recurEndRepeat" value="#{text.EndOfRecur}:" />
+                    </div>
+                    <div class="section">
+                    
+                        <!-- TYPE OF END OF RECURRENCES -->
+                        <h:selectOneMenu 
+                            value="#{eventController.endOfRecur}" 
+                            id="recurEndRepeat"
+                            style="width:150px; ">
+                            <f:selectItem itemValue="NEVER"  itemLabel="#{text.NEVER}" />
+                            <f:selectItem itemValue="END_BY_NUMBER"  itemLabel="#{text.AfterNumberOfTimes}" />
+                            <f:selectItem itemValue="END_BY_DATE"  itemLabel="#{text.SpecificDate}" />
+                            <a4j:ajax 
+                                event="change" 
+                                execute="@this"
+                                render="recurDefineEnd"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                
+                <a4j:outputPanel id="recurDefineEnd" >
+                  
+                    <!-- END BY NUMBER OF RECURRENCES -->
+                    <a4j:outputPanel styleClass="container" rendered="#{eventController.endOfRecur.equals('END_BY_NUMBER')}" style="margin-bottom: 1px;">
+                        <div class="section label" style="width:100px; ">
+                            <h:outputLabel for="recurCount" value="#{text.Count}:" />
+                        </div>
+                        <div class="section">
+                            <rich:inputNumberSpinner id="recurCount" value="#{eventController.recurRule.count}" step="1" minValue="1" maxValue="365"/>
+                        </div>
+                        <div class="section">
+                            <rich:message for="recurCount" />
+                        </div>
+                    </a4j:outputPanel>
+                    
+                    
+                    <!-- END BY DATE OF RECURRENCES -->
+                    <a4j:outputPanel styleClass="container" rendered="#{eventController.endOfRecur.equals('END_BY_DATE')}" style="margin-bottom: 1px;">
+                        <div class="section label" style="width:100px; ">
+                            <h:outputLabel for="recurUntil" value="#{text.Date}:" />
+                        </div>
+                        <div class="section">
+                            <rich:calendar 
+                                value="#{eventController.recurRule.until}" id="recurUntil"
+                                popup="true" datePattern="#{eventController.datetimeFormat}"
+                                showApplyButton="true" cellWidth="24px" cellHeight="22px" style="width:200px"
+                                required="true" requiredMessage="#{text.PleaseEnter} '#{text.Date}'!" />
+                        </div>
+                        <div class="section">
+                            <rich:message for="recurUntil" />
+                        </div>
+                    </a4j:outputPanel>                       
+
+                </a4j:outputPanel>
+    
+            </a4j:outputPanel>
+            
+        </a4j:outputPanel>    
+            
+    </rich:collapsiblePanel>
+    
+</ui:composition>
+

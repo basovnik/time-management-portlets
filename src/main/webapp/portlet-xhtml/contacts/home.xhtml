@@ -1,0 +1,269 @@
+<ui:composition template="templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:pbr="http://jboss.org/portletbridge">
+
+    <ui:define name="body">
+        
+        <div class="container header"> 
+        
+                <!-- AJAX SPINNER FOR THIS VIEW -->
+                <div style="height:24px; float: right;">
+                        <a4j:status name="#{portletBean.portletWindowId}_contactsSatus">
+                            <f:facet name="start">
+                                <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                            </f:facet>
+                        </a4j:status>      
+                </div>
+           
+                <div style="float:right; padding: 3px;">
+                    <a4j:outputPanel id="popupMenu" styleClass="clickable">
+                        <h:graphicImage value="#{resource['/images/icn-menu.png']}" alt="ai" width="20px" height="16px" title="#{text.Menu}" />
+                    </a4j:outputPanel>
+                    
+                    <pbr:renderURL var="editModeURL" portletMode="edit">
+                    </pbr:renderURL>
+                    
+                    <pbr:renderURL var="helpModeURL" portletMode="help">
+                    </pbr:renderURL>
+                    
+                    <rich:contextMenu target="popupMenu" mode="ajax" showEvent="click" direction="bottomLeft">                                                      
+                           
+                        <rich:menuItem label="#{text.Settings}"                                      
+                            status="#{portletBean.portletWindowId}_contactsSatus"
+                            onclick="document.location.href='#{editModeURL}'"/>
+                            
+                        <rich:menuItem label="#{text.Help}"                                      
+                            status="#{portletBean.portletWindowId}_contactsSatus"
+                            onclick="document.location.href='#{helpModeURL}'"/> 
+                                                 
+                    </rich:contextMenu>
+                </div>
+                
+                <div style="float:right; padding: 3px;">
+                    <a href="#" onClick="document.location.reload(true)" title="refresh page">
+                        <h:graphicImage value="#{resource['/images/refresh.png']}" alt="ai" width="15px" height="15px"/>
+                    </a>
+                </div>
+                
+        </div>
+        
+            <div class="container body" style="padding-bottom: 30px;">
+            <h:form>
+    
+                <rich:tabPanel switchType="client" id="contactsTabPanel">
+                    <rich:tab header="#{text.Contacts}" name="contactsTab" id="contactsTab">
+                    
+                        <div style="float: right;">
+                            <a4j:region >
+                                <!-- New contact button -->                   
+                                    <a4j:commandButton value="#{text.NewContact}"
+                                        title="#{text.NewContact}"
+                                        actionListener="#{contactController.initContact()}"
+                                        action="#{popupManagerContactsBean.setPopup('newContact', text.NewContact)}"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_contactsSatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;" 
+                                        execute="@this">
+                                    </a4j:commandButton>       
+                            </a4j:region>
+                        </div>
+                        
+                        <a4j:region id="form-contactsView">
+                            <a4j:outputPanel id="contactsView" layout="block">
+                       
+                                 <div style="margin-bottom: 5px;">
+                                
+                                    <h:inputText 
+                                        value="#{contactController.searchStr}"
+                                        style="margin-right: 10px; width: 200px; margin-bottom: 5px; ">
+                                        <rich:placeholder value="#{text.ContactsSearchPlaceholder}" />
+                                        <a4j:ajax event="keyup" execute="@this" render="selectedContactsCount selectedContacts" status="#{portletBean.portletWindowId}_contactsSatus"/>
+                                    </h:inputText>
+                                    
+                                    <h:selectOneMenu 
+                                        value="#{contactController.groupFilter}" 
+                                        converter="contactGroupConverter"
+                                        style="margin-right: 10px;" >
+                                        <f:selectItem itemValue="" itemLabel="#{text.AllContacts}" />
+                                        <f:selectItems value="#{contactGroupController.allContactGroups}" var="cgItem" 
+                                            itemValue="#{cgItem}" itemLabel="#{cgItem.name}"/>
+                                        <a4j:ajax event="change" execute="@this" render="selectedContactsCount selectedContacts" status="#{portletBean.portletWindowId}_contactsSatus"/>
+                                    </h:selectOneMenu>
+                                    
+                                    <h:outputText 
+                                        id="selectedContactsCount" 
+                                        value="#{text.Found}: #{contactController.selectedContacts.size()}" />
+                                </div>                      
+                                
+                                <a4j:outputPanel styleClass="container" id="selectedContacts" layout="block">
+                                    <a4j:repeat rows="10" var="contact" value="#{contactController.selectedContacts}" id="contacts">
+                                        <a4j:commandLink 
+                                            title="#{contact.usedName}"
+                                            actionListener="#{contactController.setContact(contact)}"
+                                            action="#{popupManagerContactsBean.setPopup('contactDetail', text.ContactDetail)}"
+                                            render="dynamic-popup-content dynamic-popup-title"
+                                            status="#{portletBean.portletWindowId}_contactsSatus"
+                                            oncomplete="#{rich:component('dynamic-popup')}.show();">
+                                                    
+                                            <div class="section" style="width: 25%; min-width: 200px;">
+                                                <div class="container contactItem">
+                                                    <div class="section name">
+                                                        <strong>
+                                                            <h:outputText value="#{fn:length(contact.usedName) > 40 ? 
+                                                                fn:substring(contact.usedName, 0, 40).concat('...') : contact.usedName}" />
+                                                        </strong>
+                                                    </div>
+                                                    <div class="section">
+                                                        <h:graphicImage value="#{resource['/images/avatar-male.png']}" alt="male" width="40px" height="40px" rendered="#{contact.male}" style="float:right;"/>
+                                                        <h:graphicImage value="#{resource['/images/avatar-female.png']}" alt="female" width="40px" height="40px" rendered="#{not contact.male}" style="float:right;"/>  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a4j:commandLink>
+                                    </a4j:repeat>
+                                    <div class="cleaner"></div>
+                                    <center>
+                                        <rich:dataScroller for="contacts" id="ds" render="contactsView" stepControls="auto" boundaryControls="hide"
+                                            fastControls="hide" maxPages="5" status="#{portletBean.portletWindowId}_contactsStatus" />
+                                    </center>
+                
+                                </a4j:outputPanel>
+                            </a4j:outputPanel>    
+                        </a4j:region> 
+                        
+                    
+                    </rich:tab>
+                    
+                    <rich:tab header="#{text.Groups}" name="groupsTabX">
+    
+                        <div style="text-align: right; margin-bottom: 5px;">
+                            <a4j:region>
+                                <!-- New group button -->                   
+                                    <a4j:commandButton value="#{text.NewGroup}"
+                                        title="#{text.NewGroup}"
+                                        actionListener="#{contactGroupController.initContactGroup()}"
+                                        action="#{popupManagerContactsBean.setPopup('newGroup', text.NewGroup)}"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_contactsSatus"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;" 
+                                        execute="@this">
+                                    </a4j:commandButton>       
+                            </a4j:region>
+                        </div>
+                        
+                        <a4j:region id="form-groupsView">
+                            <a4j:outputPanel id="groupsView" layout="block">
+                                
+    
+                                
+                                <ui:repeat var="cg" value="#{contactGroupController.allContactGroups}">
+                                    <div class="contactGroupItem container">
+                                        <div class="section" style="padding-right: 20px; padding-left: 10px;">
+                                            <h:graphicImage value="#{resource['/images/avatar-group.png']}" alt="group" width="40px" height="40px" />  
+                                        </div>
+                                        <div class="section" style="min-width: 150px; padding-top: 5px; ">
+                                            <strong><h:outputText value="#{cg.name}" /></strong><br />
+                                            <h:outputText value="#{text.MemberCount}: #{cg.contacts.size()}" />                                        
+                                        </div>
+                                        <div class="section">
+                                            <a4j:commandButton
+                                                title="#{text.Contacts}"
+                                                value="#{text.Contacts}"
+                                                actionListener="#{contactController.setGroupFilter(cg)}"
+                                                render="contactsTabPanel"
+                                                execute="@this"
+                                                status="#{portletBean.portletWindowId}_contactsSatus">   
+                                             </a4j:commandButton>
+                                                
+                                            <a4j:commandButton
+                                                title="#{text.detail}"
+                                                value="#{text.detail}"
+                                                actionListener="#{contactGroupController.setContactGroup(cg)}"
+                                                action="#{popupManagerContactsBean.setPopup('groupDetail', text.ContactGroupDetail)}"
+                                                render="dynamic-popup-content dynamic-popup-title"
+                                                oncomplete="#{rich:component('dynamic-popup')}.show(); return false;"
+                                                execute="@this"
+                                                status="#{portletBean.portletWindowId}_contactsSatus"
+                                                />                                  
+                                            
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+                            </a4j:outputPanel>
+                            
+                            <br />
+                            
+                            <a4j:commandButton
+                                value="#{text.importVCardFile}"
+                                title="#{text.importVCardFile}"
+                                action="#{popupManagerContactsBean.setPopup('uploadVCard', text.importVCardFile)}"
+                                render="dynamic-popup-content dynamic-popup-title"   
+                                status="#{portletBean.portletWindowId}_contactsSatus"              
+                                oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show(); return false;" />
+                            
+                        </a4j:region>
+                    </rich:tab>
+                    
+                </rich:tabPanel>
+                
+            </h:form>
+        </div>
+                
+            
+        
+        
+        <!-- ### DYNAMIC POPUP ### -->
+                  
+        <rich:popupPanel id="dynamic-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 contacts">  
+                                          
+            <f:facet name="header">
+                <a4j:outputPanel id="dynamic-popup-title">
+                    <h:outputText value="#{not empty popupManagerContactsBean.title ? popupManagerContactsBean.title : text.NewContact}" />
+                </a4j:outputPanel> 
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('dynamic-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <a4j:outputPanel id="dynamic-popup-content">
+                    <ui:include src="#{not empty popupManagerContactsBean.view ? popupManagerContactsBean.view : 'newContact'}.xhtml" />
+                </a4j:outputPanel> 
+            </h:form>                   
+        </rich:popupPanel>
+        
+        
+        <!-- 
+            Popup fot file upload
+            Workaround: Dynamic loading does not work - bug! 
+        -->
+        <rich:popupPanel id="upload-popup" modal="true"
+            autosized="true" resizeable="false"
+            styleClass="xbasov00 contacts">  
+                                          
+            <f:facet name="header">
+                <h:outputText value="#{text.FileUpload}" />
+            </f:facet>
+            <f:facet name="controls">                       
+                <h:outputLink value="#" onclick="#{rich:component('upload-popup')}.hide(); return false;">
+                    #{text.Close}
+                </h:outputLink>                                           
+            </f:facet>
+            <h:form>
+                <ui:include src="uploadVCard.xhtml" />  
+            </h:form>                   
+        </rich:popupPanel> 
+                  
+    </ui:define>
+</ui:composition>
+

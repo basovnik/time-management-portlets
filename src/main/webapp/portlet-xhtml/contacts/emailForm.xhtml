@@ -1,0 +1,68 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    
+  
+    <a4j:outputPanel id="emailsTable">
+
+        <h:dataTable 
+            value="#{contactController.contact.emailsAsList}"
+            var="emailItem" 
+            rendered="#{not empty contactController.contact.emailsAsList}"
+            styleClass="simpletablestyle">
+            <h:column>
+                <f:facet name="header">#{text.Title}</f:facet>
+                <h:outputText value="#{emailItem.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{text.Email}</f:facet>
+                <h:outputLink value="mailto:#{emailItem.email}">
+                    <h:outputText value="#{emailItem.email}" />
+                </h:outputLink>
+            </h:column>
+            <h:column>
+                <f:facet name="header"></f:facet>
+                <a4j:commandLink 
+                    title="#{text.delete}"
+                    value="#{text.delete}"
+                    action="#{contactController.deleteEmailTmp(emailItem)}"
+                    execute="@this"
+                    render="emailsTable" 
+                    status="xxx"/>
+            </h:column>
+        </h:dataTable>
+    </a4j:outputPanel>
+    
+    <a4j:outputPanel id="emailsForm">
+        <h:panelGrid columns="3" rowClasses="detailTableRow">
+        
+            <h:outputLabel for="emailName" value="#{text.Title}:" styleClass="required" />
+            <h:inputText id="emailName" value="#{contactController.email.name}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.Title}!" />
+            <rich:message for="emailName" />
+            
+            <h:outputLabel for="emailValue" value="#{text.Email}:" styleClass="required" />
+            <h:inputText id="emailValue" value="#{contactController.email.email}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.Email}!" />
+            <rich:message for="emailValue" />
+             
+        </h:panelGrid>
+        
+   </a4j:outputPanel>
+   
+   
+    <a4j:commandButton 
+        title="#{text.Add}" 
+        value="#{text.Add}"
+        action="#{contactController.addEmailTmp()}" 
+        render="emailsTable emailsForm"
+        />
+    
+
+</ui:composition>
+

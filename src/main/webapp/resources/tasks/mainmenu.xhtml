@@ -1,0 +1,96 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:a4j="http://richfaces.org/a4j">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="selectedItem" />
+    </cc:interface>
+          
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+    
+        <h:commandLink title="#{text.Inbox}" action="inbox?faces-redirect=true">
+            <div class="menuItemStatus">
+                <h:outputText value="(#{taskController.inboxTasks.size()})" 
+                    rendered="#{taskController.inboxTasks.size() > 0}"/>
+            </div>
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('inbox') ? 'selected' : ''}">
+                <div class="section inbox gtd-icon"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Inbox}" />
+                </div>      
+            </div>
+        </h:commandLink>
+        
+        <h:link title="#{text.Today}" outcome="today">
+            <div class="menuItemStatus">
+                <h:outputText value="(#{taskController.todayTasks.size()})" 
+                    rendered="#{taskController.todayTasks.size() > 0}" />
+            </div>
+            <div class="menuItemStatus" style="color: red; padding-right: 0px;">
+                <h:outputText value="(#{taskController.uncompletedPastTasks.size()})" 
+                    rendered="#{taskController.uncompletedPastTasks.size() > 0}" />
+            </div>
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('today') ? 'selected' : ''}">
+                <div class="section gtd-icon today"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Today}" />
+                </div> 
+            </div>
+        </h:link>
+        
+        <h:link title="#{text.Tomorrow}" outcome="tomorrow">
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('tomorrow') ? 'selected' : ''}">
+                <div class="section gtd-icon tomorrow"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Tomorrow}" />
+                </div>      
+            </div>
+        </h:link>
+        
+        <h:link title="#{text.Scheduled}" outcome="scheduled">
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('scheduled') ? 'selected' : ''}">
+                <div class="section gtd-icon scheduled"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Scheduled}" />
+                </div>     
+            </div>
+        </h:link>
+        
+        <h:link title="#{text.Next}" outcome="next">
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('next') ? 'selected' : ''}">     
+                <div class="section gtd-icon next"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Next}" />
+                </div>   
+            </div>
+        </h:link>
+        
+        <h:link title="#{text.Someday}" outcome="someday">
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('someday') ? 'selected' : ''}">
+                <div class="section gtd-icon someday"></div>
+                <div class="section">
+                    <h:outputText value="#{text.Someday}" />
+                </div>        
+            </div>
+        </h:link>
+        
+        <h:link title="#{text.WaitingFor}" outcome="waitingFor">
+            <div class="menuItemStatus">
+                <h:outputText value="(#{taskController.waitingForTasks.size()})" 
+                    rendered="#{taskController.waitingForTasks.size() > 0}" />
+            </div>
+            <div class="container menuItem #{cc.attrs.selectedItem.equals('waitingFor') ? 'selected' : ''}"> 
+                <div class="section gtd-icon waiting"></div>
+                <div class="section">
+                    <h:outputText value="#{text.WaitingFor}" />
+                </div>        
+            </div>
+        </h:link>
+   
+    </cc:implementation>    
+
+</f:view>

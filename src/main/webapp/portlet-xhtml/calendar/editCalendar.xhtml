@@ -1,0 +1,41 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    
+    <a4j:region>
+    
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right;">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+    
+        <h3>#{calendarController.calendar.name}</h3>
+        
+        <h:panelGrid columns="3" rowClasses="detailTableRow"> 
+            <ui:include src="newCalendar/calendarForm.xhtml" />        
+        </h:panelGrid>
+        <div class="buttonField">        
+            <a4j:commandButton value="#{text.Save}"
+                actionListener="#{calendarController.editCalendar()}"
+                action="#{popupManagerCalendarBean.setPopup('calendarDetail', text.CalendarDetail)}"
+                render="newEvent calendarView selectedCalendars dynamic-popup-content dynamic-popup-title"
+                oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show(); return false;" 
+                >
+            </a4j:commandButton>
+        </div>
+    
+    </a4j:region>
+
+
+    
+</ui:composition>
+

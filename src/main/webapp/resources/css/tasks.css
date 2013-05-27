@@ -1,0 +1,156 @@
+.xbasov00.tasks .leftCol hr {
+    background-color: #C4C0B9;
+    border: none;
+    margin: 3px 10px;
+    height: 1px;
+}
+
+.xbasov00.tasks .body {
+  padding: 10px;
+  border: 1px solid #DEDFDF;
+  background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+}
+
+.xbasov00.tasks .menuItem {
+    padding: 3px 5px 3px 5px;
+    font-weight: bold;
+    font-size: 8pt;
+    margin-bottom: 1px;
+    line-height: 24px;
+}
+
+.xbasov00.tasks .menuItemStatus {
+    float: right;
+    line-height: 24px;
+    padding-top: 3px;
+    padding-right: 5px;
+}
+
+.xbasov00.tasks .menuItem.selected, .xbasov00 .menuItem:hover{
+    background-color: #E6FFAE;
+}
+
+.xbasov00.tasks .menuItem .menu {
+    visibility: hidden;
+    border: 1px solid gray;
+    border-radius: 4px 4px 4px 4px;
+    margin-top: 5px;
+    width: 10px;
+    height: 10px;
+    margin-left: 2px;
+    background:url('#{resource['/images/down.gif']}') center center no-repeat;
+}
+
+.xbasov00.tasks .menuItem .gtd-icon {
+    margin-right: 5px;
+}
+
+.xbasov00.tasks .gtd-icon {
+    background:url('#{resource['/images/gtd-icons.png']}') center center no-repeat;
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+.xbasov00.tasks .gtd-icon.inbox {
+    background-position: 0 0;
+}
+
+.xbasov00.tasks .gtd-icon.today {
+    background-position: -24px 0;
+}
+
+.xbasov00.tasks .gtd-icon.tomorrow {
+    background-position: -48px -458px;
+}
+
+.xbasov00.tasks .gtd-icon.scheduled {
+    background-position: -72px 0;
+}
+
+.xbasov00.tasks .gtd-icon.next {
+    background-position: -48px 0;
+}
+
+.xbasov00.tasks .gtd-icon.someday {
+    background-position: -96px 0;
+}
+
+.xbasov00.tasks .gtd-icon.waiting {
+    background-position: -120px 0;
+}
+.xbasov00.tasks .gtd-icon.completed {
+    background-position: -216px 0;
+}
+.xbasov00.tasks .gtd-icon.project {
+    background-position: -168px 0;
+}
+.xbasov00.tasks .gtd-icon.context {
+    background-position: -144px 0;
+}
+
+.xbasov00.tasks .menuItem:hover .menu {
+    visibility: visible;
+    cursor: pointer;
+}
+
+.xbasov00.tasks .task .datetimeScheduled {
+    margin-left: 10px;
+}
+
+.xbasov00.tasks .taskList a {
+    text-decoration: none;
+}
+
+.xbasov00.tasks .taskList .task {
+    padding: 10px 10px;
+    margin-bottom: 3px;
+    border: 1px solid #DEDFDF;
+    background-color: #F5FFE0;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.xbasov00.tasks .taskList .task:hover {
+    background-color: #E6FFAE;
+}
+
+.xbasov00.tasks .taskList .task .name {
+    font-weight: bold;
+}
+.xbasov00.tasks .header {
+    background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+    padding: 5px 10px;
+}
+
+.xbasov00.tasks .leftCol {
+    width: 125px;
+    float:left;
+    border-right: 1px solid #DEDFDF;
+}
+
+.xbasov00.tasks .leftCol a {
+    text-decoration: none;
+}
+
+/** Extension of RichFaces */
+.xbasov00.tasks .leftCol .rf-cp {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+.xbasov00.tasks .leftCol .rf-cp-b {
+    padding: 0px;
+    margin: 0px;
+}
+.xbasov00.tasks .rf-cal .past {
+    color: rgb(160, 160, 160);
+}
+.xbasov00.tasks .rf-cp-lbl {
+    line-height: 15pt;
+}
+.xbasov00.tasks .rf-cp-lbl-exp, .xbasov00 .rf-cp-lbl-colps {
+    font-size: 7pt !important;
+}
+.xbasov00.tasks .rf-cp-hdr {
+    background: none;
+    border: none;
+}

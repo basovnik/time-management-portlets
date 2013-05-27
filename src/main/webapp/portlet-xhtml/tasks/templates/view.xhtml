@@ -1,0 +1,259 @@
+<ui:composition template="main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:pbr="http://jboss.org/portletbridge"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="body">                 
+    <h:form>
+        <div class="container header"> 
+
+                <!-- AJAX SPINNER FOR THIS VIEW -->
+                <div style="height:24px; float: right;">
+                        <a4j:status name="#{portletBean.portletWindowId}_tasksSatus">
+                            <f:facet name="start">
+                                <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                            </f:facet>
+                        </a4j:status>      
+                </div>
+            
+            
+            
+                <div style="float:right; padding: 3px;">
+                    <a4j:outputPanel id="popupMenu" styleClass="clickable">
+                        <h:graphicImage value="#{resource['/images/icn-menu.png']}" alt="ai" width="20px" height="16px" title="#{text.Menu}" />
+                    </a4j:outputPanel>
+                    
+                    <pbr:renderURL var="editModeURL" portletMode="edit">
+                    </pbr:renderURL>
+                    
+                    <pbr:renderURL var="helpModeURL" portletMode="help">
+                    </pbr:renderURL>
+                    
+                    <rich:contextMenu target="popupMenu" mode="ajax" showEvent="click" direction="bottomLeft">                                                      
+                        <rich:menuItem label="#{text.ICalExport}"                                      
+                            status="#{portletBean.portletWindowId}_tasksStatus"
+                            action="#{popupManagerTasksBean.setPopup('../exportTasks', text.ICalExport)}"                 
+                            render="dynamic-popup-content dynamic-popup-title"
+                            oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />
+                              
+                        <rich:menuItem label="#{text.ICalImport}"                                      
+                            status="#{portletBean.portletWindowId}_tasksStatus"
+                            action="#{popupManagerTasksBean.setPopup('../importTasks', text.ICalImport)}"                 
+                            render="dynamic-popup-content dynamic-popup-title"
+                            oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />
+                            
+                        <rich:menuItem label="#{text.Settings}"                                      
+                            status="#{portletBean.portletWindowId}_calendarStatus"
+                            onclick="document.location.href='#{editModeURL}'"/>
+                            
+                        <rich:menuItem label="#{text.Help}"                                      
+                            status="#{portletBean.portletWindowId}_calendarStatus"
+                            onclick="document.location.href='#{helpModeURL}'"/> 
+                                                 
+                    </rich:contextMenu>
+                </div>
+                
+                <div style="float:right; padding: 3px;">
+                    <a href="#" onClick="document.location.reload(true)" title="refresh page">
+                        <h:graphicImage value="#{resource['/images/refresh.png']}" alt="ai" width="15px" height="15px"/>
+                    </a>
+                </div>
+                
+                <a4j:outputPanel id="newTask">
+                    <a4j:commandButton value="#{text.NewTask}"
+                        title="#{text.NewTask}"
+                        actionListener="#{taskController.initTask()}"
+                        action="#{popupManagerTasksBean.setPopup('../newTask', text.NewTask)}"
+                        render="mainmenu dynamic-popup-content dynamic-popup-title"
+                        status="#{portletBean.portletWindowId}_tasksSatus"
+                        execute="@this"
+                        oncomplete="#{rich:component('dynamic-popup')}.show(); return false;" />
+                </a4j:outputPanel>
+            
+        
+        </div>
+        
+        <div class="container body" style="padding: 0px;">
+        
+            <div class="leftCol">
+                    <a4j:outputPanel layout="block" id="mainmenu">
+                    
+                        <ui:insert name="menu">
+                            Menu content missed
+                        </ui:insert>
+                        
+                        <hr />
+                    
+                        <!-- PROJECTS -->
+                     
+                        <rich:collapsiblePanel switchType="ajax" id="projects">  
+                            <f:facet name="headerCollapsed"> 
+                                <h:outputText value="#{text.PROJECTS}" />
+                            </f:facet>
+                            <f:facet name="headerExpanded"> 
+                                <div style="float: right; margin-right: 3px;">
+                                    <a4j:commandButton 
+                                        title="#{text.NewProject}"
+                                        value="+"
+                                        actionListener="#{projectController.initProject()}"
+                                        action="#{popupManagerTasksBean.setPopup('../newProject', text.NewProject)}"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show();return false;"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_tasksStatus"
+                                        style="margin-left: 5px;">
+                                    </a4j:commandButton>
+                                </div>
+                                <h:outputText value="#{text.PROJECTS}" />
+                                
+                            </f:facet>
+                            <ui:repeat var="project" value="#{projectController.allProjects}">
+                                
+                                    <div class="container menuItem #{(view.viewId == '/portlet-xhtml/tasks/project.xhtml' and projectController.project.name == project.name) ? 'selected' : ''}">                 
+                                               
+                                        <a4j:outputPanel id="projPanel" styleClass="menu" style="float:right;" layout="block" />
+                                        <rich:contextMenu target="projPanel" mode="ajax" showEvent="click"> 
+                                                                          
+                                            <rich:menuItem label="#{text.detail}"
+                                                actionListener="#{projectController.setProject(project)}"
+                                                action="#{popupManagerTasksBean.setPopup('../projectDetail', text.ProjectDetail)}"                 
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                render="dynamic-popup-content dynamic-popup-title"
+                                                oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />
+                                                
+                                            <rich:menuItem label="#{text.edit}"
+                                                actionListener="#{projectController.setProject(project)}"
+                                                action="#{popupManagerTasksBean.setPopup('../editProject', text.EditProject)}"                 
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                render="dynamic-popup-content dynamic-popup-title"
+                                                oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />  
+                                                                                 
+                                            <rich:menuItem label="#{text.delete}"
+                                                action="#{projectController.deleteProject(project)}"
+                                                render="projects tasksView"                  
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                onclick="if (!confirm('#{text.DeleteProjectAlert}')) return false;"/>
+                                                
+                                        </rich:contextMenu>
+                                        <div class="section gtd-icon project"></div>
+                                        <div class="section">
+                                            <h:commandLink 
+                                                title="#{project.name}"
+                                                actionListener="#{projectController.setProject(project)}"
+                                                action="project?faces-redirect=true">
+                                                <div>
+                                                    <h:outputText value="#{fn:length(project.name) > 10 ? 
+                                                fn:substring(project.name, 0, 10).concat('...') : project.name}" />
+                                                </div>
+                                            </h:commandLink>
+                                        </div>                
+                                        
+                                    </div>                                                                                              
+                            </ui:repeat>
+        
+                        </rich:collapsiblePanel>
+                     
+                        <hr />
+                
+                        <!-- CONTEXTS -->
+        
+                        <rich:collapsiblePanel switchType="ajax" id="contexts">  
+                            <f:facet name="headerCollapsed"> 
+                                <h:outputText value="#{text.CONTEXTS}" />
+                            </f:facet>
+                            <f:facet name="headerExpanded"> 
+                                <div style="float: right; margin-right: 3px;">
+                                    <a4j:commandButton 
+                                        title="#{text.NewContext}"
+                                        value="+"
+                                        actionListener="#{contextController.initContext()}"
+                                        action="#{popupManagerTasksBean.setPopup('../newContext', text.NewContext)}"
+                                        oncomplete="#{rich:component('dynamic-popup')}.show();return false;"
+                                        render="dynamic-popup-content dynamic-popup-title"
+                                        status="#{portletBean.portletWindowId}_tasksStatus"
+                                        style="margin-left: 5px;">
+                                    </a4j:commandButton>
+                                </div>
+                                <h:outputText value="#{text.CONTEXTS}" />
+                                
+                            </f:facet>
+                            <ui:repeat var="context" value="#{contextController.allContexts}">
+                                
+                                    <div class="container menuItem #{(view.viewId == '/portlet-xhtml/tasks/context.xhtml' and contextController.context.name == context.name) ? 'selected' : ''}">                 
+                                               
+                                        <a4j:outputPanel id="contextPanel" styleClass="menu" style="float:right;" layout="block" />
+                                        <rich:contextMenu target="contextPanel" mode="ajax" showEvent="click"> 
+                                                                          
+                                            <rich:menuItem label="#{text.detail}"
+                                                actionListener="#{contextController.setContext(context)}"
+                                                action="#{popupManagerTasksBean.setPopup('../contextDetail', text.ContextDetail)}"                 
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                render="dynamic-popup-content dynamic-popup-title"
+                                                oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />
+                                                
+                                            <rich:menuItem label="#{text.edit}"
+                                                actionListener="#{contextController.setContext(context)}"
+                                                action="#{popupManagerTasksBean.setPopup('../editContext', text.EditContext)}"                 
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                render="dynamic-popup-content dynamic-popup-title"
+                                                oncomplete="#{rich:component('dynamic-popup')}.show();return false;" />  
+                                                                                 
+                                            <rich:menuItem label="#{text.delete}"
+                                                action="#{contextController.deleteContext(context)}"
+                                                render="contexts tasksView"                  
+                                                status="#{portletBean.portletWindowId}_tasksStatus"
+                                                onclick="if (!confirm('#{text.DeleteContextAlert}')) return false;"/>
+                                                
+                                        </rich:contextMenu>
+                                        <div class="section gtd-icon context"></div>
+                                        <div class="section">
+                                            <a4j:commandLink 
+                                                title="@#{context.name}"
+                                                actionListener="#{contextController.setContext(context)}"
+                                                action="context?faces-redirect=true"
+                                                execute="@this">
+                                                <div>
+                                                    <h:outputText value="#{fn:length(context.name) > 10 ? 
+                                                fn:substring(context.name, 0, 10).concat('...') : context.name}" />
+                                                </div>
+                                            </a4j:commandLink>
+                                        </div>                
+                                        
+                                    </div>                                                                                              
+                            </ui:repeat>
+        
+                        </rich:collapsiblePanel>
+        
+                        <hr />
+                         
+                        <h:link title="#{text.CompletedTasks}" outcome="completed">
+                        <div class="container menuItem #{(view.viewId == '/portlet-xhtml/tasks/completed.xhtml') ? 'selected' : ''}">
+                            <div class="section gtd-icon completed"></div>
+                            <div class="section">
+                                <h:outputText value="#{text.CompletedTasks}" />
+                            </div> 
+                        </div>
+                    </h:link>
+                    
+                    </a4j:outputPanel>
+            </div>
+            
+            
+            <div style="margin-left: 125px; overflow: hidden; padding: 10px; ">
+            
+                <ui:insert name="tasks">
+                        Body content missed
+                </ui:insert>          
+    
+            </div>
+        
+        </div>
+        
+    </h:form>                         
+    </ui:define>
+</ui:composition>

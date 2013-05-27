@@ -1,0 +1,69 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+    
+  
+    <a4j:outputPanel id="urlsTable">
+
+        <h:dataTable 
+            value="#{contactController.contact.urlsAsList}"
+            var="urlItem" 
+            rendered="#{not empty contactController.contact.urlsAsList}"
+            styleClass="simpletablestyle">
+            <h:column>
+                <f:facet name="header">#{text.Title}</f:facet>
+                <h:outputText value="#{urlItem.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{text.URL}</f:facet>
+                <h:outputLink value="#{urlItem.url}" title="#{urlItem.url}" target="_blank">
+                    <h:outputText value="#{urlItem.url}" />
+                </h:outputLink>
+            </h:column>
+            <h:column>
+                <f:facet name="header"></f:facet>
+                <a4j:commandLink 
+                    title="#{text.delete}"
+                    value="#{text.delete}"
+                    action="#{contactController.deleteUrlTmp(urlItem)}"
+                    execute="@this"
+                    render="urlsTable" 
+                    status="xxx"/>
+            </h:column>
+        </h:dataTable>
+    </a4j:outputPanel>
+    
+    <a4j:outputPanel id="urlsForm">
+        <h:panelGrid columns="3" rowClasses="detailTableRow">
+        
+            <h:outputLabel for="urlName" value="#{text.Title}:" styleClass="required" />
+            <h:inputText id="urlName" value="#{contactController.url.name}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.Title}!" />
+            <rich:message for="urlName" />
+            
+            <h:outputLabel for="urlValue" value="#{text.URL}:" styleClass="required" />
+
+            <h:inputText id="urlValue" value="#{contactController.url.url}" 
+                required="true" requiredMessage="#{text.PleaseEnter} #{text.URL}!" />
+            <rich:message for="urlValue" />
+             
+        </h:panelGrid>
+        
+   </a4j:outputPanel>
+   
+   
+    <a4j:commandButton 
+        title="#{text.Add}" 
+        value="#{text.Add}"
+        action="#{contactController.addUrlTmp()}" 
+        render="urlsTable urlsForm"
+        />
+    
+
+</ui:composition>
+

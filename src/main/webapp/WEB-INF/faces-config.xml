@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+
+
+    <application>
+        <message-bundle>
+            dip.xbasov00.messages
+        </message-bundle>
+        <!-- Declare the internationalization resources -->
+        <resource-bundle>
+            <!-- The resource bundle property files are in src/main/resources/dip/xbasov00 -->
+            <base-name>dip.xbasov00.text</base-name>
+            <var>text</var>
+        </resource-bundle>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>cs</supported-locale>
+        </locale-config>
+     </application>
+
+
+</faces-config>

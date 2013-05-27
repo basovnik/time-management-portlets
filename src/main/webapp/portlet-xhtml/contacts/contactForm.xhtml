@@ -1,0 +1,113 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+    <h:panelGrid columns="3" id="contactFormPanel" rowClasses="detailTableRow">
+
+        <h:outputLabel for="displayedName" value="#{text.DisplayedName}:" />
+        <h:inputText label="DisplayedName" id="displayedName" 
+            value="#{contactController.contact.displayedName}">
+            <f:validateLength maximum="50" />
+        </h:inputText>
+        <rich:message for="displayedName" />
+        
+        
+        <h:outputLabel for="degreesBefore" value="#{text.DegreesBefore}:" />
+        <h:inputText label="DegreesBefore" id="degreesBefore" 
+            value="#{contactController.contact.degreeBefore}">
+            <f:validateLength maximum="10" />
+        </h:inputText>
+        <rich:message for="degreesBefore" />
+        
+        
+        <h:outputLabel for="name" value="#{text.Name}:" styleClass="required"/>
+        <h:inputText label="Name" id="name" 
+            required="true" requiredMessage="#{text.PleaseEnter} #{text.Name}!"
+            value="#{contactController.contact.name}">
+            <f:validateLength maximum="20" />
+        </h:inputText>
+        <rich:message for="name" />
+        
+        
+        <h:outputLabel for="middleName" value="#{text.MiddleName}:" />
+        <h:inputText label="MiddleName" id="middleName" 
+            value="#{contactController.contact.middleName}">
+            <f:validateLength maximum="20" />
+        </h:inputText>
+        <rich:message for="middleName" />
+        
+        
+        <h:outputLabel for="surname" value="#{text.Surname}:" />
+        <h:inputText label="Surname" id="surname" 
+            value="#{contactController.contact.surname}">
+            <f:validateLength maximum="20" />
+        </h:inputText>
+        <rich:message for="surname" />
+        
+        
+        <h:outputLabel for="degreesAfter" value="#{text.DegreesAfter}:" />
+        <h:inputText label="DegreesAfter" id="degreesAfter" 
+            value="#{contactController.contact.degreeAfter}">
+            <f:validateLength maximum="10" />
+        </h:inputText>
+        <rich:message for="degreesAfter" />
+        
+        
+        <h:outputLabel for="birthday" value="#{text.Birthday}:" />
+        <rich:calendar value="#{contactController.contact.birthday}" id="birthday"
+            popup="true" datePattern="dd/MM/yyyy"
+            showApplyButton="true" cellWidth="24px" cellHeight="22px" style="position:absolute;" />
+        <rich:message for="birthday" />
+        
+        
+        <h:outputLabel for="anniversary" value="#{text.Anniversary}:" />
+        <rich:calendar value="#{contactController.contact.anniversary}" id="anniversary"
+            popup="true" datePattern="dd/MM/yyyy"
+            showApplyButton="true" cellWidth="24px" cellHeight="22px" style="position:absolute;" />
+        <rich:message for="anniversary" />
+        
+        
+        <h:outputLabel for="gender" value="#{text.Gender}:" />
+        <h:selectOneMenu value="#{contactController.contact.gender}" id="gender">
+            <f:selectItems value="#{contactController.genders}" /> 
+        </h:selectOneMenu>
+        <rich:message for="gender" />
+        
+        
+        <h:outputLabel for="description" value="#{text.Description}:" />
+        <h:inputTextarea label="Description" id="description" rows="4"
+            value="#{contactController.contact.note}">
+            <f:validateLength maximum="1000" />
+        </h:inputTextarea>
+        <rich:message for="description" />
+        
+        
+        <h:outputLabel for="languages" value="#{text.Languages}:" />
+        <h:selectManyCheckbox value="#{contactController.contactLangs}" id="languages" converter="langConverter" layout="pageDirection">
+            <f:selectItems value="#{langController.allLanguages}" var="langItem" 
+                itemValue="#{langItem}" itemLabel="#{langItem.name}"/> 
+        </h:selectManyCheckbox>
+        <rich:message for="languages" />
+        
+        
+        <h:outputLabel for="groups" value="#{text.Groups}:" />
+        <h:selectManyCheckbox value="#{contactController.contactGroups}" id="groups" converter="contactGroupConverter" layout="pageDirection">
+            <f:selectItems value="#{contactGroupController.allContactGroups}" var="cgItem" 
+                itemValue="#{cgItem}" itemLabel="#{cgItem.name}"/> 
+        </h:selectManyCheckbox>
+        <rich:message for="groups" />
+        
+            
+    </h:panelGrid>
+
+
+        
+        
+    
+</ui:composition>
+

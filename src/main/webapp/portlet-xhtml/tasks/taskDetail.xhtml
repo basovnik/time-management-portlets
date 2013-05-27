@@ -1,0 +1,118 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:rich="http://richfaces.org/rich">
+    
+     
+     
+     <a4j:region>
+     
+        <!-- AJAX SPINNER FOR THIS REGION -->
+        <div style="float: right; height: 22px; ">
+            <a4j:status>
+                <f:facet name="start">
+                    <h:graphicImage value="#{resource['/images/ajax_loader.gif']}" alt="ai" width="22px" height="22px"/>
+                </f:facet>
+            </a4j:status>
+        </div>
+        
+        <div style="float: right; position: relative; top: -5px; " class="gtd-icon 
+            #{taskController.task.gtdGroup == 'INBOX' ? ' inbox' : ''}
+            #{(taskController.task.gtdGroup == 'SCHEDULED' and (taskController.task.today or taskController.task.delayed)) ? ' today' : ''}
+            #{(taskController.task.gtdGroup == 'SCHEDULED' and taskController.task.tomorrow) ? ' tomorrow' : ''}
+            #{(taskController.task.gtdGroup == 'SCHEDULED' and taskController.task.afterTomorrow) ? ' scheduled' : ''}
+            #{taskController.task.gtdGroup == 'NEXT' ? ' next' : ''}
+            #{taskController.task.gtdGroup == 'SOMEDAY' ? ' someday' : ''}
+            #{taskController.task.gtdGroup == 'WAITING_FOR' ? ' waiting' : ''}
+            " ></div>
+       
+        <h3 style="min-width: 200px;"><h:outputText value="#{taskController.task.name}" /></h3>
+        
+        
+        <div class="container" style="margin-bottom: 10px; ">
+            <div style="float: right;">
+                #{text.Priority}: <b><h:outputText value="#{taskController.task.priority}" /></b>
+            </div>
+            <h:outputText value="#{taskController.task.project.name}" rendered="#{not empty taskController.task.project}" />
+        </div>
+        
+        <div class="container" style="margin-bottom: 5px; ">
+            <i>
+                <c:forEach var="context" items="#{taskController.task.contextsAsList}" varStatus="loop">
+                    <h:outputText value="@#{context.name}" />
+                    <c:if test="#{not loop.last}">, </c:if>    
+                </c:forEach>
+            </i>
+        </div>
+        
+        <a4j:outputPanel layout="block" rendered="#{not empty taskController.task.datetimeScheduled}">
+            <strong>
+                <h:outputText 
+                    value="#{taskController.task.datetimeScheduled}" 
+                    rendered="#{not empty taskController.task.datetimeScheduled and taskController.task.allDayTask}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="CET"/>
+                </h:outputText>
+                <h:outputText 
+                    value="#{taskController.task.datetimeScheduled}" 
+                    rendered="#{not empty taskController.task.datetimeScheduled and not taskController.task.allDayTask}">
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="CET"/>
+                </h:outputText>
+            </strong>
+        </a4j:outputPanel>
+        
+        <a4j:outputPanel layout="block" rendered="#{not empty taskController.task.locality}">
+            <h:outputText 
+                value="#{taskController.task.locality}" 
+                rendered="#{not empty taskController.task.locality}">
+            </h:outputText>
+        </a4j:outputPanel>
+
+        
+        <p>#{taskController.task.description}</p>
+        
+        <hr />
+        
+        <a4j:commandButton
+            value="#{text.Done}!"
+            title="#{text.Done}"
+            actionListener="#{taskController.setCompletedTask(true)}"
+            render="mainmenu tasksView"                
+            oncomplete="#{rich:component('dynamic-popup')}.hide(); return false;" 
+            rendered="#{not taskController.task.completed}"
+            style="background-color: #E6FFAE;">
+            <a4j:actionListener listener="#{contextController.refreshContext()}"/>
+            <a4j:actionListener listener="#{projectController.refreshProject()}"/>
+        </a4j:commandButton>
+            
+        <a4j:commandButton
+            value="#{text.Open}!"
+            title="#{text.Open}"
+            action="#{taskController.setCompletedTask(false)}"
+            render="mainmenu tasksView"                
+            oncomplete="#{rich:component('dynamic-popup')}.hide(); return false;" 
+            rendered="#{taskController.task.completed}"
+            style="background-color: #E6FFAE;"/>
+        
+        <a4j:commandButton
+            value="#{text.edit}"
+            title="#{text.EditTask}"
+            action="#{popupManagerTasksBean.setPopup('../editTask', text.EditTask)}"
+            render="dynamic-popup-content dynamic-popup-title"                
+            oncomplete="#{rich:component('dynamic-popup')}.hide(); #{rich:component('dynamic-popup')}.show(); return false;" />
+            
+        <a4j:commandButton
+            value="#{text.delete}"
+            title="#{text.DeleteTask}"
+            actionListener="#{taskController.deleteTask()}"
+            render="mainmenu tasksView"                       
+            onclick="if (confirm('#{text.DeleteTaskAlert}')) #{rich:component('dynamic-popup')}.hide(); else return false;" >
+            <a4j:actionListener listener="#{contextController.refreshContext()}"/>
+            <a4j:actionListener listener="#{projectController.refreshProject()}"/>
+        </a4j:commandButton>
+
+    </a4j:region>
+        
+</ui:composition>

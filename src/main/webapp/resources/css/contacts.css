@@ -1,0 +1,40 @@
+.xbasov00.contacts .contactItem {
+    border: 1px solid #DEDFDF;
+    background-color: #F5FFE0;
+    padding: 5px;
+    margin: 0px 5px 5px 0px;
+    border-radius: 4px 4px 4px 4px;
+}
+.xbasov00.contacts .contactItem .name {
+    width: 140px;
+    font-size: 8pt;
+    height: 40px;
+}
+.xbasov00.contacts .contactItem:hover {
+    background-color: #E6FFAE;
+    cursor: pointer;
+}
+
+.xbasov00.contacts .contactGroupItem {
+    border: 1px solid #DEDFDF;
+    background-color: #F5FFE0;
+    padding: 5px;
+    margin: 0px 5px 5px 0px;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.xbasov00.contacts .contactGroupItem:hover {
+    background-color: #E6FFAE;
+    cursor: pointer;
+}
+
+.xbasov00.contacts .body {
+  padding: 10px;
+  border: 1px solid #DEDFDF;
+  background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+}
+
+.xbasov00.contacts .header {
+    background: url('#{resource['/images/bg-gradient.gif']}') left bottom repeat-x;
+    padding: 5px 10px;
+}
