@@ -3,7 +3,7 @@ Time management portlets
 
 The set of portlets supporting time management consists of portlets Calendar, Tasks and Contacts.
 
-Details and the description may be found in master's thesis of the author [1] and in a user manual. The user manual is attached to this application in a form of a PDF file, located: `/src/main/webapp/user-manual.pdf`(https://github.com/basovnik/time-management-portlets/blob/master/src/main/webapp/user-manual.pdf).
+Details and the description may be found in master's thesis of the author [1] and in a user manual. The user manual is attached to this application in a form of a PDF file, located: [/src/main/webapp/user-manual.pdf](https://github.com/basovnik/time-management-portlets/blob/master/src/main/webapp/user-manual.pdf).
 
 Testing environment
 -------------------
